@@ -1,0 +1,204 @@
+/*--------------------------------------------------------------------------------------
+ *  Copyright 2025 Glass Devtools, Inc. All rights reserved.
+ *  Licensed under the Apache License, Version 2.0. See LICENSE.txt for more information.
+ *--------------------------------------------------------------------------------------*/
+
+.monaco-editor .cymulateCodeEditor-sweepIdxBG {
+	background-color: var(--vscode-cymulateCodeEditor-sweepIdxBG);
+}
+
+.cymulateCodeEditor-sweepBG {
+	background-color: var(--vscode-cymulateCodeEditor-sweepBG);
+}
+
+.cymulateCodeEditor-highlightBG {
+	background-color: var(--vscode-cymulateCodeEditor-highlightBG);
+}
+
+.cymulateCodeEditor-greenBG {
+	background-color: var(--vscode-cymulateCodeEditor-greenBG);
+}
+
+.cymulateCodeEditor-redBG {
+	background-color: var(--vscode-cymulateCodeEditor-redBG);
+}
+
+
+/* Renamed from cymulateCodeEditor-watermark-button to cymulateCodeEditor-openfolder-button */
+.cymulateCodeEditor-openfolder-button {
+    padding: 8px 20px;
+    background-color: #306dce;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    outline: none !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+.cymulateCodeEditor-openfolder-button:hover {
+    background-color: #2563eb;
+}
+.cymulateCodeEditor-openfolder-button:active {
+    background-color: #2563eb;
+}
+
+/* Added for Open SSH button with slightly darker color */
+.cymulateCodeEditor-openssh-button {
+    padding: 8px 20px;
+    background-color: #656565; /* Slightly darker than the #5a5a5a in the TS file */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    outline: none !important;
+	box-shadow: none !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.cymulateCodeEditor-openssh-button:hover {
+    background-color: #474747; /* Darker on hover */
+}
+.cymulateCodeEditor-openssh-button:active {
+    background-color: #474747;
+}
+
+
+.cymulateCodeEditor-settings-watermark-button {
+	margin: 8px 0;
+	padding: 8px 20px;
+	background-color: var(--vscode-input-background);
+	color: var(--vscode-input-foreground);
+	border: none;
+	border-radius: 4px;
+	outline: none !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.cymulateCodeEditor-settings-watermark-button:hover {
+	filter: brightness(1.1);
+}
+
+.cymulateCodeEditor-settings-watermark-button:active {
+	filter: brightness(1.1);
+}
+
+.cymulateCodeEditor-link {
+	color: #3b82f6;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.cymulateCodeEditor-link:hover {
+	opacity: 80%;
+}
+
+/* styles for all containers used by void */
+.cymulateCodeEditor-scope {
+	--scrollbar-vertical-width: 8px;
+	--scrollbar-horizontal-height: 6px;
+}
+
+/* Target both cymulateCodeEditor-scope and all its descendants with scrollbars */
+.cymulateCodeEditor-scope,
+.cymulateCodeEditor-scope * {
+	scrollbar-width: thin !important;
+	scrollbar-color: var(--cymulateCodeEditor-bg-1) var(--cymulateCodeEditor-bg-3) !important;
+	/* For Firefox */
+}
+
+.cymulateCodeEditor-scope::-webkit-scrollbar,
+.cymulateCodeEditor-scope *::-webkit-scrollbar {
+	width: var(--scrollbar-vertical-width) !important;
+	height: var(--scrollbar-horizontal-height) !important;
+	background-color: var(--cymulateCodeEditor-bg-3) !important;
+}
+
+.cymulateCodeEditor-scope::-webkit-scrollbar-thumb,
+.cymulateCodeEditor-scope *::-webkit-scrollbar-thumb {
+	background-color: var(--cymulateCodeEditor-bg-1) !important;
+	border-radius: 4px !important;
+	border: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.cymulateCodeEditor-scope::-webkit-scrollbar-thumb:hover,
+.cymulateCodeEditor-scope *::-webkit-scrollbar-thumb:hover {
+	background-color: var(--cymulateCodeEditor-bg-1) !important;
+	filter: brightness(1.1) !important;
+}
+
+.cymulateCodeEditor-scope::-webkit-scrollbar-thumb:active,
+.cymulateCodeEditor-scope *::-webkit-scrollbar-thumb:active {
+	background-color: var(--cymulateCodeEditor-bg-1) !important;
+	filter: brightness(1.2) !important;
+}
+
+.cymulateCodeEditor-scope::-webkit-scrollbar-track,
+.cymulateCodeEditor-scope *::-webkit-scrollbar-track {
+	background-color: var(--cymulateCodeEditor-bg-3) !important;
+	border: none !important;
+}
+
+.cymulateCodeEditor-scope::-webkit-scrollbar-corner,
+.cymulateCodeEditor-scope *::-webkit-scrollbar-corner {
+	background-color: var(--cymulateCodeEditor-bg-3) !important;
+}
+
+/* Add cymulateCodeEditor-scrollable-element styles to match */
+.cymulateCodeEditor-scrollable-element {
+	background-color: var(--vscode-editor-background);
+	--scrollbar-vertical-width: 14px;
+	--scrollbar-horizontal-height: 6px;
+	overflow: auto;
+	/* Ensure scrollbars are shown when needed */
+}
+
+.cymulateCodeEditor-scrollable-element,
+.cymulateCodeEditor-scrollable-element * {
+	scrollbar-width: thin !important;
+	/* For Firefox */
+	scrollbar-color: var(--cymulateCodeEditor-bg-1) var(--cymulateCodeEditor-bg-3) !important;
+	/* For Firefox */
+}
+
+.cymulateCodeEditor-scrollable-element::-webkit-scrollbar,
+.cymulateCodeEditor-scrollable-element *::-webkit-scrollbar {
+	width: var(--scrollbar-vertical-width) !important;
+	height: var(--scrollbar-horizontal-height) !important;
+	background-color: var(--cymulateCodeEditor-bg-3) !important;
+}
+
+.cymulateCodeEditor-scrollable-element::-webkit-scrollbar-thumb,
+.cymulateCodeEditor-scrollable-element *::-webkit-scrollbar-thumb {
+	background-color: var(--cymulateCodeEditor-bg-1) !important;
+	border-radius: 4px !important;
+	border: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.cymulateCodeEditor-scrollable-element::-webkit-scrollbar-thumb:hover,
+.cymulateCodeEditor-scrollable-element *::-webkit-scrollbar-thumb:hover {
+	background-color: var(--cymulateCodeEditor-bg-1) !important;
+	filter: brightness(1.1) !important;
+}
+
+.cymulateCodeEditor-scrollable-element::-webkit-scrollbar-thumb:active,
+.cymulateCodeEditor-scrollable-element *::-webkit-scrollbar-thumb:active {
+	background-color: var(--cymulateCodeEditor-bg-1) !important;
+	filter: brightness(1.2) !important;
+}
+
+.cymulateCodeEditor-scrollable-element::-webkit-scrollbar-track,
+.cymulateCodeEditor-scrollable-element *::-webkit-scrollbar-track {
+	background-color: var(--cymulateCodeEditor-bg-3) !important;
+	border: none !important;
+}
+
+.cymulateCodeEditor-scrollable-element::-webkit-scrollbar-corner,
+.cymulateCodeEditor-scrollable-element *::-webkit-scrollbar-corner {
+	background-color: var(--cymulateCodeEditor-bg-3) !important;
+}
