@@ -216,14 +216,14 @@
 		"wellformed-html": {
 			"patterns": [
 				{
-					"include": "#cymulateCodeEditor-tag"
+					"include": "#void-tag"
 				},
 				{
-					"include": "#non-cymulateCodeEditor-tag"
+					"include": "#non-void-tag"
 				}
 			]
 		},
-		"cymulateCodeEditor-tag": {
+		"void-tag": {
 			"name": "meta.tag.structure.$3.void.html",
 			"begin": "(?i)(<)(!)?(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|source|track|wbr)(?=\\s|/?>)",
 			"beginCaptures": {
@@ -249,7 +249,7 @@
 				}
 			}
 		},
-		"non-cymulateCodeEditor-tag": {
+		"non-void-tag": {
 			"begin": "(?=<(!)?([^/\\s>]+)(\\s|/?>))",
 			"end": "(</)(\\2)\\s*(>)|(/>)",
 			"endCaptures": {
