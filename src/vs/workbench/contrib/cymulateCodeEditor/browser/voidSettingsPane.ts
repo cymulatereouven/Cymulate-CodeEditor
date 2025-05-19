@@ -35,7 +35,7 @@ class CymulateCodeEditorSettingsInput extends EditorInput {
 	static readonly ID: string = 'workbench.input.void.settings';
 
 	static readonly RESOURCE = URI.from({ // I think this scheme is invalid, it just shuts up TS
-		scheme: 'void',  // Custom scheme for our editor (try Schemas.https)
+		scheme: 'cymulateCodeEditor',  // Custom scheme for our editor (try Schemas.https)
 		path: 'settings'
 	})
 	readonly resource = CymulateCodeEditorSettingsInput.RESOURCE;
@@ -49,7 +49,7 @@ class CymulateCodeEditorSettingsInput extends EditorInput {
 	}
 
 	override getName(): string {
-		return nls.localize('voidSettingsInputsName', 'CymulateCodeEditor\'s Settings');
+		return nls.localize('cymulateCodeEditorSettingsInputsName', 'CymulateCodeEditor\'s Settings');
 	}
 
 	override getIcon() {
@@ -123,7 +123,7 @@ registerAction2(class extends Action2 {
 	constructor() {
 		super({
 			id: VOID_TOGGLE_SETTINGS_ACTION_ID,
-			title: nls.localize2('voidSettings', "CymulateCodeEditor: Toggle Settings"),
+			title: nls.localize2('cymulateCodeEditorSettings', "CymulateCodeEditor: Toggle Settings"),
 			icon: Codicon.settingsGear,
 			menu: [
 				{
@@ -172,7 +172,7 @@ registerAction2(class extends Action2 {
 	constructor() {
 		super({
 			id: VOID_OPEN_SETTINGS_ACTION_ID,
-			title: nls.localize2('voidSettingsAction2', "CymulateCodeEditor: Open Settings"),
+			title: nls.localize2('cymulateCodeEditorSettingsAction2', "CymulateCodeEditor: Open Settings"),
 			f1: true,
 			icon: Codicon.settingsGear,
 		});
@@ -202,7 +202,7 @@ MenuRegistry.appendMenuItem(MenuId.GlobalActivity, {
 	group: '0_command',
 	command: {
 		id: VOID_TOGGLE_SETTINGS_ACTION_ID,
-		title: nls.localize('voidSettingsActionGear', "CymulateCodeEditor\'s Settings")
+		title: nls.localize('cymulateCodeEditorSettingsActionGear', "CymulateCodeEditor\'s Settings")
 	},
 	order: 1
 });

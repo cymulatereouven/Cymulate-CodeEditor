@@ -61,10 +61,10 @@ export const roundRangeToLines = (range: IRange | null | undefined, options: { e
 
 
 
-const VOID_OPEN_SIDEBAR_ACTION_ID = 'void.sidebar.open'
+const VOID_OPEN_SIDEBAR_ACTION_ID = 'cymulateCodeEditor.sidebar.open'
 registerAction2(class extends Action2 {
 	constructor() {
-		super({ id: VOID_OPEN_SIDEBAR_ACTION_ID, title: localize2('voidOpenSidebar', 'CymulateCodeEditor: Open Sidebar'), f1: true });
+		super({ id: VOID_OPEN_SIDEBAR_ACTION_ID, title: localize2('cymulateCodeEditorOpenSidebar', 'CymulateCodeEditor: Open Sidebar'), f1: true });
 	}
 	async run(accessor: ServicesAccessor): Promise<void> {
 		const viewsService = accessor.get(IViewsService)
@@ -81,7 +81,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_CTRL_L_ACTION_ID,
 			f1: true,
-			title: localize2('voidCmdL', 'CymulateCodeEditor: Add Selection to Chat'),
+			title: localize2('cymulateCodeEditorCmdL', 'CymulateCodeEditor: Add Selection to Chat'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyCode.KeyL,
 				weight: KeybindingWeight.CymulateCodeEditorExtension
@@ -144,7 +144,7 @@ registerAction2(class extends Action2 {
 
 
 // New chat keybind + menu button
-const VOID_CMD_SHIFT_L_ACTION_ID = 'void.cmdShiftL'
+const VOID_CMD_SHIFT_L_ACTION_ID = 'cymulateCodeEditor.cmdShiftL'
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
@@ -209,7 +209,7 @@ registerAction2(class extends Action2 {
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
-			id: 'void.historyAction',
+			id: 'cymulateCodeEditor.historyAction',
 			title: 'View Past Chats',
 			icon: { id: 'history' },
 			menu: [{ id: MenuId.ViewTitle, group: 'navigation', when: ContextKeyExpr.equals('view', VOID_VIEW_ID), }]
@@ -239,7 +239,7 @@ registerAction2(class extends Action2 {
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
-			id: 'void.settingsAction',
+			id: 'cymulateCodeEditor.settingsAction',
 			title: `CymulateCodeEditor's Settings`,
 			icon: { id: 'settings-gear' },
 			menu: [{ id: MenuId.ViewTitle, group: 'navigation', when: ContextKeyExpr.equals('view', VOID_VIEW_ID), }]

@@ -282,7 +282,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 	// 		message: `CymulateCodeEditor Error: ${e.message}`,
 	// 		actions: {
 	// 			secondary: [{
-	// 				id: 'void.onerror.opensettings',
+	// 				id: 'cymulateCodeEditor.onerror.opensettings',
 	// 				enabled: true,
 	// 				label: `Open CymulateCodeEditor's settings`,
 	// 				tooltip: '',
@@ -2094,7 +2094,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 
 
-	// called on void.acceptDiff
+	// called on cymulateCodeEditor.acceptDiff
 	public async acceptDiff({ diffid }: { diffid: number }) {
 
 		// TODO could use an ITextModelto do this instead, would be much simpler
@@ -2165,7 +2165,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 
 
-	// called on void.rejectDiff
+	// called on cymulateCodeEditor.rejectDiff
 	public async rejectDiff({ diffid }: { diffid: number }) {
 
 		const diff = this.diffOfId[diffid]

@@ -290,7 +290,7 @@ export interface IChatThreadService {
 	blurCurrentChat: () => Promise<void>
 }
 
-export const IChatThreadService = createDecorator<IChatThreadService>('voidChatThreadService');
+export const IChatThreadService = createDecorator<IChatThreadService>('cymulateCodeEditorChatThreadService');
 class ChatThreadService extends Disposable implements IChatThreadService {
 	_serviceBrand: undefined;
 
@@ -1155,7 +1155,7 @@ We only need to do it for files that were edited since `from`, ie files between 
 				sticky: true,
 				actions: {
 					primary: [{
-						id: 'void.goToChat',
+						id: 'cymulateCodeEditor.goToChat',
 						enabled: true,
 						label: `Jump to Chat`,
 						tooltip: '',

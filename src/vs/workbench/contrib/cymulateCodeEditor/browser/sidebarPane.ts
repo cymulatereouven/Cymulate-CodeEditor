@@ -98,7 +98,7 @@ class SidebarViewPane extends ViewPane {
 // ---------- Register viewpane inside the void container ----------
 
 // const voidThemeIcon = Codicon.symbolObject;
-// const voidViewIcon = registerIcon('cymulateCodeEditor-view-icon', voidThemeIcon, localize('voidViewIcon', 'View icon of the CymulateCodeEditor chat view.'));
+// const voidViewIcon = registerIcon('cymulateCodeEditor-view-icon', voidThemeIcon, localize('cymulateCodeEditorViewIcon', 'View icon of the CymulateCodeEditor chat view.'));
 
 // called VIEWLET_ID in other places for some reason
 export const VOID_VIEW_CONTAINER_ID = 'workbench.view.void'
@@ -108,7 +108,7 @@ export const VOID_VIEW_ID = VOID_VIEW_CONTAINER_ID
 const viewContainerRegistry = Registry.as<IViewContainersRegistry>(ViewContainerExtensions.ViewContainersRegistry);
 const container = viewContainerRegistry.registerViewContainer({
 	id: VOID_VIEW_CONTAINER_ID,
-	title: nls.localize2('voidContainer', 'Chat'), // this is used to say "CymulateCodeEditor" (Ctrl + L)
+	title: nls.localize2('cymulateCodeEditorContainer', 'Chat'), // this is used to say "CymulateCodeEditor" (Ctrl + L)
 	ctorDescriptor: new SyncDescriptor(ViewPaneContainer, [VOID_VIEW_CONTAINER_ID, {
 		mergeViewWithContainerWhenSingleView: true,
 		orientation: Orientation.HORIZONTAL,
@@ -130,7 +130,7 @@ viewsRegistry.registerViews([{
 	id: VOID_VIEW_ID,
 	hideByDefault: false, // start open
 	// containerIcon: voidViewIcon,
-	name: nls.localize2('voidChat', ''), // this says ... : CHAT
+	name: nls.localize2('cymulateCodeEditorChat', ''), // this says ... : CHAT
 	ctorDescriptor: new SyncDescriptor(SidebarViewPane),
 	canToggleVisibility: false,
 	canMoveView: false, // can't move this out of its container
@@ -149,7 +149,7 @@ viewsRegistry.registerViews([{
 
 
 // open sidebar
-export const VOID_OPEN_SIDEBAR_ACTION_ID = 'void.openSidebar'
+export const VOID_OPEN_SIDEBAR_ACTION_ID = 'cymulateCodeEditor.openSidebar'
 registerAction2(class extends Action2 {
 	constructor() {
 		super({

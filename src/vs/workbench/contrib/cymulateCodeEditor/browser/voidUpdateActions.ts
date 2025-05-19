@@ -31,7 +31,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'reinstall') {
 			primary.push({
 				label: `Reinstall`,
-				id: 'void.updater.reinstall',
+				id: 'cymulateCodeEditor.updater.reinstall',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -45,7 +45,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'download') {
 			primary.push({
 				label: `Download`,
-				id: 'void.updater.download',
+				id: 'cymulateCodeEditor.updater.download',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -59,7 +59,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'apply') {
 			primary.push({
 				label: `Apply`,
-				id: 'void.updater.apply',
+				id: 'cymulateCodeEditor.updater.apply',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -72,7 +72,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'restart') {
 			primary.push({
 				label: `Restart`,
-				id: 'void.updater.restart',
+				id: 'cymulateCodeEditor.updater.restart',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -83,7 +83,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		}
 
 		primary.push({
-			id: 'void.updater.site',
+			id: 'cymulateCodeEditor.updater.site',
 			enabled: true,
 			label: `CymulateCodeEditor Site`,
 			tooltip: '',
@@ -97,7 +97,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		actions = {
 			primary: primary,
 			secondary: [{
-				id: 'void.updater.close',
+				id: 'cymulateCodeEditor.updater.close',
 				enabled: true,
 				label: `Keep current version`,
 				tooltip: '',
@@ -176,8 +176,8 @@ registerAction2(class extends Action2 {
 	constructor() {
 		super({
 			f1: true,
-			id: 'void.voidCheckUpdate',
-			title: localize2('voidCheckUpdate', 'CymulateCodeEditor: Check for Updates'),
+			id: 'cymulateCodeEditor.voidCheckUpdate',
+			title: localize2('cymulateCodeEditorCheckUpdate', 'CymulateCodeEditor: Check for Updates'),
 		});
 	}
 	async run(accessor: ServicesAccessor): Promise<void> {

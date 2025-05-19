@@ -51,9 +51,9 @@ registerSingleton(IMetricsService, MetricsService, InstantiationType.Eager);
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
-			id: 'voidDebugInfo',
+			id: 'cymulateCodeEditorDebugInfo',
 			f1: true,
-			title: localize2('voidMetricsDebug', 'CymulateCodeEditor: Log Debug Info'),
+			title: localize2('cymulateCodeEditorMetricsDebug', 'CymulateCodeEditor: Log Debug Info'),
 		});
 	}
 	async run(accessor: ServicesAccessor): Promise<void> {

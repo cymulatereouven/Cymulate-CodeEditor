@@ -78,7 +78,7 @@ const defaultState: NonNullable<CommandBarStateType> = {
 export class CymulateCodeEditorCommandBarService extends Disposable implements ICymulateCodeEditorCommandBarService {
 	_serviceBrand: undefined;
 
-	static readonly ID: 'void.CymulateCodeEditorCommandBarService'
+	static readonly ID: 'cymulateCodeEditor.CymulateCodeEditorCommandBarService'
 
 	// depends on uri -> diffZone -> {streaming, diffs}
 	public stateOfURI: { [uri: string]: CommandBarStateType } = {}
@@ -572,7 +572,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_ACCEPT_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('voidAcceptDiffAction', 'CymulateCodeEditor: Accept Diff'),
+			title: localize2('cymulateCodeEditorAcceptDiffAction', 'CymulateCodeEditor: Accept Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.Enter,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.Enter },
@@ -615,7 +615,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_REJECT_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('voidRejectDiffAction', 'CymulateCodeEditor: Reject Diff'),
+			title: localize2('cymulateCodeEditorRejectDiffAction', 'CymulateCodeEditor: Reject Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.Backspace,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.Backspace },
@@ -656,7 +656,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_NEXT_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('voidGoToNextDiffAction', 'CymulateCodeEditor: Go to Next Diff'),
+			title: localize2('cymulateCodeEditorGoToNextDiffAction', 'CymulateCodeEditor: Go to Next Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.DownArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.DownArrow },
@@ -683,7 +683,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_PREV_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('voidGoToPrevDiffAction', 'CymulateCodeEditor: Go to Previous Diff'),
+			title: localize2('cymulateCodeEditorGoToPrevDiffAction', 'CymulateCodeEditor: Go to Previous Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.UpArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.UpArrow },
@@ -710,7 +710,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_NEXT_URI_ACTION_ID,
 			f1: true,
-			title: localize2('voidGoToNextUriAction', 'CymulateCodeEditor: Go to Next File with Diffs'),
+			title: localize2('cymulateCodeEditorGoToNextUriAction', 'CymulateCodeEditor: Go to Next File with Diffs'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.RightArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.RightArrow },
@@ -737,7 +737,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_PREV_URI_ACTION_ID,
 			f1: true,
-			title: localize2('voidGoToPrevUriAction', 'CymulateCodeEditor: Go to Previous File with Diffs'),
+			title: localize2('cymulateCodeEditorGoToPrevUriAction', 'CymulateCodeEditor: Go to Previous File with Diffs'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.LeftArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.LeftArrow },
@@ -764,7 +764,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_ACCEPT_FILE_ACTION_ID,
 			f1: true,
-			title: localize2('voidAcceptFileAction', 'CymulateCodeEditor: Accept All Diffs in Current File'),
+			title: localize2('cymulateCodeEditorAcceptFileAction', 'CymulateCodeEditor: Accept All Diffs in Current File'),
 			keybinding: {
 				primary: KeyMod.Alt | KeyMod.Shift | KeyCode.Enter,
 				weight: KeybindingWeight.CymulateCodeEditorExtension,
@@ -795,7 +795,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_REJECT_FILE_ACTION_ID,
 			f1: true,
-			title: localize2('voidRejectFileAction', 'CymulateCodeEditor: Reject All Diffs in Current File'),
+			title: localize2('cymulateCodeEditorRejectFileAction', 'CymulateCodeEditor: Reject All Diffs in Current File'),
 			keybinding: {
 				primary: KeyMod.Alt | KeyMod.Shift | KeyCode.Backspace,
 				weight: KeybindingWeight.CymulateCodeEditorExtension,
@@ -826,7 +826,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_ACCEPT_ALL_DIFFS_ACTION_ID,
 			f1: true,
-			title: localize2('voidAcceptAllDiffsAction', 'CymulateCodeEditor: Accept All Diffs in All Files'),
+			title: localize2('cymulateCodeEditorAcceptAllDiffsAction', 'CymulateCodeEditor: Accept All Diffs in All Files'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.Enter,
 				weight: KeybindingWeight.CymulateCodeEditorExtension,
@@ -851,7 +851,7 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_REJECT_ALL_DIFFS_ACTION_ID,
 			f1: true,
-			title: localize2('voidRejectAllDiffsAction', 'CymulateCodeEditor: Reject All Diffs in All Files'),
+			title: localize2('cymulateCodeEditorRejectAllDiffsAction', 'CymulateCodeEditor: Reject All Diffs in All Files'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.Backspace,
 				weight: KeybindingWeight.CymulateCodeEditorExtension,

@@ -901,7 +901,7 @@ export class FilesRenderer implements ICompressibleTreeRenderer<ExplorerItem, Fu
 	// voidButtonsContainer.style.top = '0'
 	// voidButtonsContainer.style.right = '0'
 	// // const voidButtons = DOM.append(voidButtonsContainer, DOM.$('span'));
-	// // voidButtons.textContent = 'voidbuttons'
+	// // voidButtons.textContent = 'cymulateCodeEditorbuttons'
 	// // voidButtons.addEventListener('click', () => {
 	// // 	console.log('ON CLICK', templateData.currentContext?.children)
 	// // })

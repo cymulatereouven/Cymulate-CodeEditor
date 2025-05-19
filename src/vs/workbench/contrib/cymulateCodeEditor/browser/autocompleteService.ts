@@ -617,7 +617,7 @@ export const IAutocompleteService = createDecorator<IAutocompleteService>('Autoc
 
 export class AutocompleteService extends Disposable implements IAutocompleteService {
 
-	static readonly ID = 'void.autocompleteService'
+	static readonly ID = 'cymulateCodeEditor.autocompleteService'
 
 	_serviceBrand: undefined;
 

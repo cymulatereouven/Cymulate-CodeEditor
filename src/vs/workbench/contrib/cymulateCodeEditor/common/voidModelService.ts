@@ -21,11 +21,11 @@ export interface ICymulateCodeEditorModelService {
 
 }
 
-export const ICymulateCodeEditorModelService = createDecorator<ICymulateCodeEditorModelService>('voidCymulateCodeEditorModelService');
+export const ICymulateCodeEditorModelService = createDecorator<ICymulateCodeEditorModelService>('cymulateCodeEditorCymulateCodeEditorModelService');
 
 class CymulateCodeEditorModelService extends Disposable implements ICymulateCodeEditorModelService {
 	_serviceBrand: undefined;
-	static readonly ID = 'voidCymulateCodeEditorModelService';
+	static readonly ID = 'cymulateCodeEditorCymulateCodeEditorModelService';
 	private readonly _modelRefOfURI: Record<string, IReference<IResolvedTextEditorModel>> = {};
 
 	constructor(

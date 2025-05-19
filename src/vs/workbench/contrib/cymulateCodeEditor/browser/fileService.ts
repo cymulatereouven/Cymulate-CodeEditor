@@ -12,15 +12,15 @@ import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
 
 
 class FilePromptActionService extends Action2 {
-	private static readonly VOID_COPY_FILE_PROMPT_ID = 'void.copyfileprompt'
+	private static readonly VOID_COPY_FILE_PROMPT_ID = 'cymulateCodeEditor.copyfileprompt'
 
 	constructor() {
 		super({
 			id: FilePromptActionService.VOID_COPY_FILE_PROMPT_ID,
-			title: localize2('voidCopyPrompt', 'CymulateCodeEditor: Copy Prompt'),
+			title: localize2('cymulateCodeEditorCopyPrompt', 'CymulateCodeEditor: Copy Prompt'),
 			menu: [{
 				id: MenuId.ExplorerContext,
-				group: '8_void',
+				group: '8_cymulateCodeEditor',
 				order: 1,
 			}]
 		});
