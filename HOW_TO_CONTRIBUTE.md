@@ -12,7 +12,7 @@ There are a few ways to contribute:
 
 ### Codebase Guide
 
-We [highly recommend reading this](https://github.com/cymulatereouven/Cymulate-CodeEditor/blob/main/VOID_CODEBASE_GUIDE.md) guide that we put together on CymulateCodeEditor's sourcecode if you'd like to add new features.
+We [highly recommend reading this](https://github.com/cymulatereouven/Cymulate-CodeEditor/blob/main/CODEBASE_GUIDE.md) guide that we put together on CymulateCodeEditor's sourcecode if you'd like to add new features.
 
 The repo is not as intimidating as it first seems if you read the guide!
 

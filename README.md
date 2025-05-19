@@ -18,7 +18,7 @@ This repo contains the full sourcecode for CymulateCodeEditor. If you're new, we
 
 ## Reference
 
-CymulateCodeEditor is a fork of the [vscode](https://github.com/microsoft/vscode) repository. For a guide to the codebase, see [VOID_CODEBASE_GUIDE](https://github.com/cymulatereouven/Cymulate-CodeEditor/blob/main/VOID_CODEBASE_GUIDE.md).
+CymulateCodeEditor is a fork of the [vscode](https://github.com/microsoft/vscode) repository. For a guide to the codebase, see [CODEBASE_GUIDE](https://github.com/cymulatereouven/Cymulate-CodeEditor/blob/main/CODEBASE_GUIDE.md).
 
 ## Support
 You can always reach us in our Discord server or contact us via email: reouvenm@cymulate.com.
