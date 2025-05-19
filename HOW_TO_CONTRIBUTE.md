@@ -6,13 +6,13 @@ There are a few ways to contribute:
 
 - 💫 Complete items on the [Roadmap](https://github.com/orgs/voideditor/projects/2).
 - 💡 Make suggestions in our [Discord](https://discord.gg/RSNjgaugJs).
-- 🪴 Start new Issues - see [Issues](https://github.com/voideditor/void/issues).
+- 🪴 Start new Issues - see [Issues](https://github.com/cymulatereouven/Cymulate-CodeEditor/issues).
 
 
 
 ### Codebase Guide
 
-We [highly recommend reading this](https://github.com/voideditor/void/blob/main/VOID_CODEBASE_GUIDE.md) guide that we put together on CymulateCodeEditor's sourcecode if you'd like to add new features.
+We [highly recommend reading this](https://github.com/cymulatereouven/Cymulate-CodeEditor/blob/main/VOID_CODEBASE_GUIDE.md) guide that we put together on CymulateCodeEditor's sourcecode if you'd like to add new features.
 
 The repo is not as intimidating as it first seems if you read the guide!
 
@@ -94,7 +94,7 @@ To build CymulateCodeEditor from the terminal instead of from inside VSCode, fol
 - If you get errors like `npm error libtool:   error: unrecognised option: '-static'`,  when running ./scripts/code.sh, make sure you have GNU libtool instead of BSD libtool (BSD is the default in macos)
 - If you get erorrs like `The SUID sandbox helper binary was found, but is not configured correctly` when running ./scripts/code.sh, run
 `sudo chown root:root .build/electron/chrome-sandbox && sudo chmod 4755 .build/electron/chrome-sandbox` and then run `./scripts/code.sh` again.
-- If you have any other questions, feel free to [submit an issue](https://github.com/voideditor/void/issues/new). You can also refer to VSCode's complete [How to Contribute](https://github.com/microsoft/vscode/wiki/How-to-Contribute) page.
+- If you have any other questions, feel free to [submit an issue](https://github.com/cymulatereouven/Cymulate-CodeEditor/issues/new). You can also refer to VSCode's complete [How to Contribute](https://github.com/microsoft/vscode/wiki/How-to-Contribute) page.
 
 
 ## Packaging

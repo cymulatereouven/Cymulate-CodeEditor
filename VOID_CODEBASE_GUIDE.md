@@ -4,7 +4,7 @@ The CymulateCodeEditor codebase is not as intimidating as it seems!
 
 Most of CymulateCodeEditor's code lives in the folder `src/vs/workbench/contrib/void/`.
 
-The purpose of this document is to explain how CymulateCodeEditor's codebase works. If you want build instructions instead, see [Contributing](https://github.com/voideditor/void/blob/main/HOW_TO_CONTRIBUTE.md).
+The purpose of this document is to explain how CymulateCodeEditor's codebase works. If you want build instructions instead, see [Contributing](https://github.com/cymulatereouven/Cymulate-CodeEditor/blob/main/HOW_TO_CONTRIBUTE.md).
 
 
 
