@@ -60,7 +60,7 @@ Exec=void
 Icon=void
 Type=Application
 Categories=Utility;
-Comment=CymulateCodeEditor Linux Application
+Comment=Void Linux Application
 EOF
 then
     echo "Error creating desktop file"

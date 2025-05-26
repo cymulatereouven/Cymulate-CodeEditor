@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=CymulateCodeEditor - URL Handler
+Name=Void - URL Handler
 Comment=Open source AI code editor.
 GenericName=Text Editor
 Exec=void --open-url %U

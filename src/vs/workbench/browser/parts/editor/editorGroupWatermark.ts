@@ -24,9 +24,9 @@ import { IWindowOpenable } from '../../../../platform/window/common/window.js';
 import { splitRecentLabel } from '../../../../base/common/labels.js';
 import { IViewsService } from '../../../services/views/common/viewsService.js';
 
-/* eslint-disable */ // CymulateCodeEditor
-import { VOID_CTRL_K_ACTION_ID, VOID_CTRL_L_ACTION_ID } from '../../../contrib/cymulateCodeEditor/browser/actionIDs.js';
-import { VOID_OPEN_SETTINGS_ACTION_ID } from '../../../contrib/cymulateCodeEditor/browser/voidSettingsPane.js';
+/* eslint-disable */ // Void
+import { VOID_CTRL_K_ACTION_ID, VOID_CTRL_L_ACTION_ID } from '../../../contrib/void/browser/actionIDs.js';
+import { VOID_OPEN_SETTINGS_ACTION_ID } from '../../../contrib/void/browser/voidSettingsPane.js';
 import { VIEWLET_ID as REMOTE_EXPLORER_VIEWLET_ID } from '../../../contrib/remote/browser/remoteExplorer.js';
 /* eslint-enable */
 
@@ -182,7 +182,7 @@ export class EditorGroupWatermark extends Disposable {
 			this.currentDisposables.clear();
 
 
-			// CymulateCodeEditor - if the workbench is empty, show open
+			// Void - if the workbench is empty, show open
 			if (this.contextService.getWorkbenchState() === WorkbenchState.EMPTY) {
 
 				// Create a flex container for buttons with vertical direction
@@ -196,7 +196,7 @@ export class EditorGroupWatermark extends Disposable {
 
 				// Open a folder
 				const openFolderButton = h('button')
-				openFolderButton.root.classList.add('cymulateCodeEditor-openfolder-button')
+				openFolderButton.root.classList.add('void-openfolder-button')
 				openFolderButton.root.style.display = 'block'
 				openFolderButton.root.style.width = '124px' // Set width to 124px as requested
 				openFolderButton.root.textContent = 'Open Folder'
@@ -212,7 +212,7 @@ export class EditorGroupWatermark extends Disposable {
 
 				// Open SSH button
 				const openSSHButton = h('button')
-				openSSHButton.root.classList.add('cymulateCodeEditor-openssh-button')
+				openSSHButton.root.classList.add('void-openssh-button')
 				openSSHButton.root.style.display = 'block'
 				openSSHButton.root.style.backgroundColor = '#5a5a5a' // Made darker than the default gray
 				openSSHButton.root.style.width = '124px' // Set width to 124px as requested
@@ -245,7 +245,7 @@ export class EditorGroupWatermark extends Disposable {
 							const { name, parentPath } = splitRecentLabel(fullPath);
 
 							const linkSpan = $('span');
-							linkSpan.classList.add('cymulateCodeEditor-link')
+							linkSpan.classList.add('void-link')
 							linkSpan.style.display = 'flex'
 							linkSpan.style.gap = '4px'
 							linkSpan.style.padding = '8px'
@@ -284,7 +284,7 @@ export class EditorGroupWatermark extends Disposable {
 			}
 			else {
 
-				// show them CymulateCodeEditor keybindings
+				// show them Void keybindings
 				const keys = this.keybindingService.lookupKeybinding(VOID_CTRL_L_ACTION_ID);
 				const dl = append(voidIconBox, $('dl'));
 				const dt = append(dl, $('dt'));
@@ -308,11 +308,11 @@ export class EditorGroupWatermark extends Disposable {
 
 				const keys3 = this.keybindingService.lookupKeybinding('workbench.action.openGlobalKeybindings');
 				const button3 = append(recentsBox, $('button'));
-				button3.textContent = `CymulateCodeEditor Settings`
+				button3.textContent = `Void Settings`
 				button3.style.display = 'block'
 				button3.style.marginLeft = 'auto'
 				button3.style.marginRight = 'auto'
-				button3.classList.add('cymulateCodeEditor-settings-watermark-button')
+				button3.classList.add('void-settings-watermark-button')
 
 				const label3 = new KeybindingLabel(button3, OS, { renderUnboundKeybindings: true, ...defaultKeybindingLabelStyles });
 				if (keys3)

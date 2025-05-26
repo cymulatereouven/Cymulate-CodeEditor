@@ -11,7 +11,7 @@ import { Widget } from '../../../../base/browser/ui/widget.js';
 import { IOverlayWidget, ICodeEditor, OverlayWidgetPositionPreference } from '../../../../editor/browser/editorBrowser.js';
 import { Emitter, Event } from '../../../../base/common/event.js';
 import { ICodeEditorService } from '../../../../editor/browser/services/codeEditorService.js';
-import { mountCymulateCodeEditorCommandBar } from './react/out/cymulateCodeEditor-editor-widgets-tsx/index.js'
+import { mountVoidCommandBar } from './react/out/void-editor-widgets-tsx/index.js'
 import { deepClone } from '../../../../base/common/objects.js';
 import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
 import { IEditCodeService } from './editCodeServiceInterface.js';
@@ -27,11 +27,11 @@ import { IMetricsService } from '../common/metricsService.js';
 import { KeyMod } from '../../../../editor/common/services/editorBaseApi.js';
 import { KeyCode } from '../../../../base/common/keyCodes.js';
 import { ScrollType } from '../../../../editor/common/editorCommon.js';
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
+import { IVoidModelService } from '../common/voidModelService.js';
 
 
 
-export interface ICymulateCodeEditorCommandBarService {
+export interface IVoidCommandBarService {
 	readonly _serviceBrand: undefined;
 	stateOfURI: { [uri: string]: CommandBarStateType };
 	sortedURIs: URI[];
@@ -54,7 +54,7 @@ export interface ICymulateCodeEditorCommandBarService {
 }
 
 
-export const ICymulateCodeEditorCommandBarService = createDecorator<ICymulateCodeEditorCommandBarService>('CymulateCodeEditorCommandBarService');
+export const IVoidCommandBarService = createDecorator<IVoidCommandBarService>('VoidCommandBarService');
 
 
 export type CommandBarStateType = undefined | {
@@ -75,10 +75,10 @@ const defaultState: NonNullable<CommandBarStateType> = {
 }
 
 
-export class CymulateCodeEditorCommandBarService extends Disposable implements ICymulateCodeEditorCommandBarService {
+export class VoidCommandBarService extends Disposable implements IVoidCommandBarService {
 	_serviceBrand: undefined;
 
-	static readonly ID: 'cymulateCodeEditor.CymulateCodeEditorCommandBarService'
+	static readonly ID: 'void.VoidCommandBarService'
 
 	// depends on uri -> diffZone -> {streaming, diffs}
 	public stateOfURI: { [uri: string]: CommandBarStateType } = {}
@@ -100,7 +100,7 @@ export class CymulateCodeEditorCommandBarService extends Disposable implements I
 		@ICodeEditorService private readonly _codeEditorService: ICodeEditorService,
 		@IModelService private readonly _modelService: IModelService,
 		@IEditCodeService private readonly _editCodeService: IEditCodeService,
-		@ICymulateCodeEditorModelService private readonly _voidModelService: ICymulateCodeEditorModelService,
+		@IVoidModelService private readonly _voidModelService: IVoidModelService,
 	) {
 		super();
 
@@ -488,10 +488,10 @@ export class CymulateCodeEditorCommandBarService extends Disposable implements I
 
 }
 
-registerSingleton(ICymulateCodeEditorCommandBarService, CymulateCodeEditorCommandBarService, InstantiationType.Delayed); // delayed is needed here :(
+registerSingleton(IVoidCommandBarService, VoidCommandBarService, InstantiationType.Delayed); // delayed is needed here :(
 
 
-export type CymulateCodeEditorCommandBarProps = {
+export type VoidCommandBarProps = {
 	uri: URI | null;
 	editor: ICodeEditor;
 }
@@ -535,12 +535,12 @@ class AcceptRejectAllFloatingWidget extends Widget implements IOverlayWidget {
 
 		this.instantiationService.invokeFunction(accessor => {
 			const uri = editor.getModel()?.uri || null
-			const res = mountCymulateCodeEditorCommandBar(root, accessor, { uri, editor } satisfies CymulateCodeEditorCommandBarProps)
+			const res = mountVoidCommandBar(root, accessor, { uri, editor } satisfies VoidCommandBarProps)
 			if (!res) return
 			this._register(toDisposable(() => res.dispose?.()))
 			this._register(editor.onWillChangeModel((model) => {
 				const uri = model.newModelUrl
-				res.rerender({ uri, editor } satisfies CymulateCodeEditorCommandBarProps)
+				res.rerender({ uri, editor } satisfies VoidCommandBarProps)
 			}))
 		})
 	}
@@ -572,18 +572,18 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_ACCEPT_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorAcceptDiffAction', 'CymulateCodeEditor: Accept Diff'),
+			title: localize2('voidAcceptDiffAction', 'Void: Accept Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.Enter,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.Enter },
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
 		const editCodeService = accessor.get(IEditCodeService);
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 
@@ -615,18 +615,18 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_REJECT_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorRejectDiffAction', 'CymulateCodeEditor: Reject Diff'),
+			title: localize2('voidRejectDiffAction', 'Void: Reject Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.Backspace,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.Backspace },
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
 		const editCodeService = accessor.get(IEditCodeService);
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		const activeURI = commandBarService.activeURI;
@@ -656,17 +656,17 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_NEXT_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorGoToNextDiffAction', 'CymulateCodeEditor: Go to Next Diff'),
+			title: localize2('voidGoToNextDiffAction', 'Void: Go to Next Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.DownArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.DownArrow },
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		const nextDiffIdx = commandBarService.getNextDiffIdx(1);
@@ -683,17 +683,17 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_PREV_DIFF_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorGoToPrevDiffAction', 'CymulateCodeEditor: Go to Previous Diff'),
+			title: localize2('voidGoToPrevDiffAction', 'Void: Go to Previous Diff'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.UpArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.UpArrow },
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		const prevDiffIdx = commandBarService.getNextDiffIdx(-1);
@@ -710,17 +710,17 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_NEXT_URI_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorGoToNextUriAction', 'CymulateCodeEditor: Go to Next File with Diffs'),
+			title: localize2('voidGoToNextUriAction', 'Void: Go to Next File with Diffs'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.RightArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.RightArrow },
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		const nextUriIdx = commandBarService.getNextUriIdx(1);
@@ -737,17 +737,17 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_GOTO_PREV_URI_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorGoToPrevUriAction', 'CymulateCodeEditor: Go to Previous File with Diffs'),
+			title: localize2('voidGoToPrevUriAction', 'Void: Go to Previous File with Diffs'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.LeftArrow,
 				mac: { primary: KeyMod.WinCtrl | KeyMod.Alt | KeyCode.LeftArrow },
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		const prevUriIdx = commandBarService.getNextUriIdx(-1);
@@ -764,16 +764,16 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_ACCEPT_FILE_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorAcceptFileAction', 'CymulateCodeEditor: Accept All Diffs in Current File'),
+			title: localize2('voidAcceptFileAction', 'Void: Accept All Diffs in Current File'),
 			keybinding: {
 				primary: KeyMod.Alt | KeyMod.Shift | KeyCode.Enter,
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const editCodeService = accessor.get(IEditCodeService);
 		const metricsService = accessor.get(IMetricsService);
 
@@ -795,16 +795,16 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_REJECT_FILE_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorRejectFileAction', 'CymulateCodeEditor: Reject All Diffs in Current File'),
+			title: localize2('voidRejectFileAction', 'Void: Reject All Diffs in Current File'),
 			keybinding: {
 				primary: KeyMod.Alt | KeyMod.Shift | KeyCode.Backspace,
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const editCodeService = accessor.get(IEditCodeService);
 		const metricsService = accessor.get(IMetricsService);
 
@@ -826,16 +826,16 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_ACCEPT_ALL_DIFFS_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorAcceptAllDiffsAction', 'CymulateCodeEditor: Accept All Diffs in All Files'),
+			title: localize2('voidAcceptAllDiffsAction', 'Void: Accept All Diffs in All Files'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.Enter,
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		if (commandBarService.anyFileIsStreaming()) return;
@@ -851,16 +851,16 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_REJECT_ALL_DIFFS_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorRejectAllDiffsAction', 'CymulateCodeEditor: Reject All Diffs in All Files'),
+			title: localize2('voidRejectAllDiffsAction', 'Void: Reject All Diffs in All Files'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.Backspace,
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}
 
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const commandBarService = accessor.get(ICymulateCodeEditorCommandBarService);
+		const commandBarService = accessor.get(IVoidCommandBarService);
 		const metricsService = accessor.get(IMetricsService);
 
 		if (commandBarService.anyFileIsStreaming()) return;

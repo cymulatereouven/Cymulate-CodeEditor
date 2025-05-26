@@ -15,15 +15,15 @@ export const Sidebar = ({ className }: { className: string }) => {
 
 	const isDark = useIsDark()
 	return <div
-		className={`@@cymulateCodeEditor-scope ${isDark ? 'dark' : ''}`}
+		className={`@@void-scope ${isDark ? 'dark' : ''}`}
 		style={{ width: '100%', height: '100%' }}
 	>
 		<div
 			// default background + text styles for sidebar
 			className={`
 				w-full h-full
-				bg-cymulateCodeEditor-bg-2
-				text-cymulateCodeEditor-fg-1
+				bg-void-bg-2
+				text-void-fg-1
 			`}
 		>
 

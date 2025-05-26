@@ -4,6 +4,6 @@
  *--------------------------------------------------------------------------------------*/
 
 import { mountFnGenerator } from '../util/mountFnGenerator.js'
-import { CymulateCodeEditorOnboarding } from './CymulateCodeEditorOnboarding.js'
+import { VoidOnboarding } from './VoidOnboarding.js'
 
-export const mountCymulateCodeEditorOnboarding = mountFnGenerator(CymulateCodeEditorOnboarding)
+export const mountVoidOnboarding = mountFnGenerator(VoidOnboarding)

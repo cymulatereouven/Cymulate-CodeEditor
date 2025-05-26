@@ -4,14 +4,14 @@
  *--------------------------------------------------------------------------------------*/
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { RefreshableProviderName, SettingsOfProvider } from '../../../../common/voidSettingsTypes.js'
+import { RefreshableProviderName, SettingsOfProvider } from '../../../../../../../workbench/contrib/void/common/voidSettingsTypes.js'
 import { IDisposable } from '../../../../../../../base/common/lifecycle.js'
-import { CymulateCodeEditorSettingsState } from '../../../../common/voidSettingsService.js'
+import { VoidSettingsState } from '../../../../../../../workbench/contrib/void/common/voidSettingsService.js'
 import { ColorScheme } from '../../../../../../../platform/theme/common/theme.js'
-import { RefreshModelStateOfProvider } from '../../../../common/refreshModelService.js'
+import { RefreshModelStateOfProvider } from '../../../../../../../workbench/contrib/void/common/refreshModelService.js'
 
 import { ServicesAccessor } from '../../../../../../../editor/browser/editorExtensions.js';
-import { IExplorerService } from '../../../../../files/browser/files.js'
+import { IExplorerService } from '../../../../../../../workbench/contrib/files/browser/files.js'
 import { IModelService } from '../../../../../../../editor/common/services/model.js';
 import { IClipboardService } from '../../../../../../../platform/clipboard/common/clipboardService.js';
 import { IContextViewService, IContextMenuService } from '../../../../../../../platform/contextview/browser/contextView.js';
@@ -19,9 +19,9 @@ import { IFileService } from '../../../../../../../platform/files/common/files.j
 import { IHoverService } from '../../../../../../../platform/hover/browser/hover.js';
 import { IThemeService } from '../../../../../../../platform/theme/common/themeService.js';
 import { ILLMMessageService } from '../../../../common/sendLLMMessageService.js';
-import { IRefreshModelService } from '../../../../common/refreshModelService.js';
-import { ICymulateCodeEditorSettingsService } from '../../../../common/voidSettingsService.js';
-import { IExtensionTransferService } from '../../../extensionTransferService.js'
+import { IRefreshModelService } from '../../../../../../../workbench/contrib/void/common/refreshModelService.js';
+import { IVoidSettingsService } from '../../../../../../../workbench/contrib/void/common/voidSettingsService.js';
+import { IExtensionTransferService } from '../../../../../../../workbench/contrib/void/browser/extensionTransferService.js'
 
 import { IInstantiationService } from '../../../../../../../platform/instantiation/common/instantiation.js'
 import { ICodeEditorService } from '../../../../../../../editor/browser/services/codeEditorService.js'
@@ -35,15 +35,15 @@ import { ILanguageDetectionService } from '../../../../../../services/languageDe
 import { IKeybindingService } from '../../../../../../../platform/keybinding/common/keybinding.js'
 import { IEnvironmentService } from '../../../../../../../platform/environment/common/environment.js'
 import { IConfigurationService } from '../../../../../../../platform/configuration/common/configuration.js'
-import { IPathService } from '../../../../../../services/path/common/pathService.js'
-import { IMetricsService } from '../../../../common/metricsService.js'
+import { IPathService } from '../../../../../../../workbench/services/path/common/pathService.js'
+import { IMetricsService } from '../../../../../../../workbench/contrib/void/common/metricsService.js'
 import { URI } from '../../../../../../../base/common/uri.js'
 import { IChatThreadService, ThreadsState, ThreadStreamState } from '../../../chatThreadService.js'
 import { ITerminalToolService } from '../../../terminalToolService.js'
 import { ILanguageService } from '../../../../../../../editor/common/languages/language.js'
-import { ICymulateCodeEditorModelService } from '../../../../common/voidModelService.js'
+import { IVoidModelService } from '../../../../common/voidModelService.js'
 import { IWorkspaceContextService } from '../../../../../../../platform/workspace/common/workspace.js'
-import { ICymulateCodeEditorCommandBarService } from '../../../voidCommandBarService.js'
+import { IVoidCommandBarService } from '../../../voidCommandBarService.js'
 import { INativeHostService } from '../../../../../../../platform/native/common/native.js';
 import { IEditCodeService } from '../../../editCodeServiceInterface.js'
 import { IToolsService } from '../../../toolsService.js'
@@ -64,8 +64,8 @@ const chatThreadsStateListeners: Set<(s: ThreadsState) => void> = new Set()
 let chatThreadsStreamState: ThreadStreamState
 const chatThreadsStreamStateListeners: Set<(threadId: string) => void> = new Set()
 
-let settingsState: CymulateCodeEditorSettingsState
-const settingsStateListeners: Set<(s: CymulateCodeEditorSettingsState) => void> = new Set()
+let settingsState: VoidSettingsState
+const settingsStateListeners: Set<(s: VoidSettingsState) => void> = new Set()
 
 let refreshModelState: RefreshModelStateOfProvider
 const refreshModelStateListeners: Set<(s: RefreshModelStateOfProvider) => void> = new Set()
@@ -89,11 +89,11 @@ export const _registerServices = (accessor: ServicesAccessor) => {
 
 	const stateServices = {
 		chatThreadsStateService: accessor.get(IChatThreadService),
-		settingsStateService: accessor.get(ICymulateCodeEditorSettingsService),
+		settingsStateService: accessor.get(IVoidSettingsService),
 		refreshModelService: accessor.get(IRefreshModelService),
 		themeService: accessor.get(IThemeService),
 		editCodeService: accessor.get(IEditCodeService),
-		voidCommandBarService: accessor.get(ICymulateCodeEditorCommandBarService),
+		voidCommandBarService: accessor.get(IVoidCommandBarService),
 		modelService: accessor.get(IModelService),
 	}
 
@@ -182,7 +182,7 @@ const getReactAccessor = (accessor: ServicesAccessor) => {
 		IThemeService: accessor.get(IThemeService),
 		ILLMMessageService: accessor.get(ILLMMessageService),
 		IRefreshModelService: accessor.get(IRefreshModelService),
-		ICymulateCodeEditorSettingsService: accessor.get(ICymulateCodeEditorSettingsService),
+		IVoidSettingsService: accessor.get(IVoidSettingsService),
 		IEditCodeService: accessor.get(IEditCodeService),
 		IChatThreadService: accessor.get(IChatThreadService),
 
@@ -205,10 +205,10 @@ const getReactAccessor = (accessor: ServicesAccessor) => {
 		IMetricsService: accessor.get(IMetricsService),
 		ITerminalToolService: accessor.get(ITerminalToolService),
 		ILanguageService: accessor.get(ILanguageService),
-		ICymulateCodeEditorModelService: accessor.get(ICymulateCodeEditorModelService),
+		IVoidModelService: accessor.get(IVoidModelService),
 		IWorkspaceContextService: accessor.get(IWorkspaceContextService),
 
-		ICymulateCodeEditorCommandBarService: accessor.get(ICymulateCodeEditorCommandBarService),
+		IVoidCommandBarService: accessor.get(IVoidCommandBarService),
 		INativeHostService: accessor.get(INativeHostService),
 		IToolsService: accessor.get(IToolsService),
 		IConvertToLLMMessageService: accessor.get(IConvertToLLMMessageService),
@@ -232,7 +232,7 @@ const _registerAccessor = (accessor: ServicesAccessor) => {
 // -- services --
 export const useAccessor = () => {
 	if (!reactAccessor_) {
-		throw new Error(`⚠️ CymulateCodeEditor useAccessor was called before _registerServices!`)
+		throw new Error(`⚠️ Void useAccessor was called before _registerServices!`)
 	}
 
 	return { get: <S extends keyof ReactAccessor,>(service: S): ReactAccessor[S] => reactAccessor_![service] }
@@ -349,7 +349,7 @@ export const useCommandBarURIListener = (listener: (uri: URI) => void) => {
 };
 export const useCommandBarState = () => {
 	const accessor = useAccessor()
-	const commandBarService = accessor.get('ICymulateCodeEditorCommandBarService')
+	const commandBarService = accessor.get('IVoidCommandBarService')
 	const [s, ss] = useState({ stateOfURI: commandBarService.stateOfURI, sortedURIs: commandBarService.sortedURIs });
 	const listener = useCallback(() => {
 		ss({ stateOfURI: commandBarService.stateOfURI, sortedURIs: commandBarService.sortedURIs });
@@ -364,7 +364,7 @@ export const useCommandBarState = () => {
 // roughly gets the active URI - this is used to get the history of recent URIs
 export const useActiveURI = () => {
 	const accessor = useAccessor()
-	const commandBarService = accessor.get('ICymulateCodeEditorCommandBarService')
+	const commandBarService = accessor.get('IVoidCommandBarService')
 	const [s, ss] = useState(commandBarService.activeURI)
 	useEffect(() => {
 		const listener = () => { ss(commandBarService.activeURI) }

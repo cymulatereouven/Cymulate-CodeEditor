@@ -10,18 +10,18 @@ import { localize2 } from '../../../../nls.js';
 import { Action2, registerAction2 } from '../../../../platform/actions/common/actions.js';
 import { INotificationActions, INotificationHandle, INotificationService } from '../../../../platform/notification/common/notification.js';
 import { IMetricsService } from '../common/metricsService.js';
-import { ICymulateCodeEditorUpdateService } from '../common/voidUpdateService.js';
+import { IVoidUpdateService } from '../common/voidUpdateService.js';
 import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
 import * as dom from '../../../../base/browser/dom.js';
 import { IUpdateService } from '../../../../platform/update/common/update.js';
-import { CymulateCodeEditorCheckUpdateRespose } from '../common/voidUpdateServiceTypes.js';
+import { VoidCheckUpdateRespose } from '../common/voidUpdateServiceTypes.js';
 import { IAction } from '../../../../base/common/actions.js';
 
 
 
 
-const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: string }, notifService: INotificationService, updateService: IUpdateService): INotificationHandle => {
-	const message = res?.message || 'This is a very old version of CymulateCodeEditor, please download the latest version! [CymulateCodeEditor Editor](https://voideditor.com/download-beta)!'
+const notifyUpdate = (res: VoidCheckUpdateRespose & { message: string }, notifService: INotificationService, updateService: IUpdateService): INotificationHandle => {
+	const message = res?.message || 'This is a very old version of Void, please download the latest version! [Void Editor](https://voideditor.com/download-beta)!'
 
 	let actions: INotificationActions | undefined
 
@@ -31,7 +31,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'reinstall') {
 			primary.push({
 				label: `Reinstall`,
-				id: 'cymulateCodeEditor.updater.reinstall',
+				id: 'void.updater.reinstall',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -45,7 +45,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'download') {
 			primary.push({
 				label: `Download`,
-				id: 'cymulateCodeEditor.updater.download',
+				id: 'void.updater.download',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -59,7 +59,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'apply') {
 			primary.push({
 				label: `Apply`,
-				id: 'cymulateCodeEditor.updater.apply',
+				id: 'void.updater.apply',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -72,7 +72,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		if (res.action === 'restart') {
 			primary.push({
 				label: `Restart`,
-				id: 'cymulateCodeEditor.updater.restart',
+				id: 'void.updater.restart',
 				enabled: true,
 				tooltip: '',
 				class: undefined,
@@ -83,9 +83,9 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		}
 
 		primary.push({
-			id: 'cymulateCodeEditor.updater.site',
+			id: 'void.updater.site',
 			enabled: true,
-			label: `CymulateCodeEditor Site`,
+			label: `Void Site`,
 			tooltip: '',
 			class: undefined,
 			run: () => {
@@ -97,7 +97,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 		actions = {
 			primary: primary,
 			secondary: [{
-				id: 'cymulateCodeEditor.updater.close',
+				id: 'void.updater.close',
 				enabled: true,
 				label: `Keep current version`,
 				tooltip: '',
@@ -127,7 +127,7 @@ const notifyUpdate = (res: CymulateCodeEditorCheckUpdateRespose & { message: str
 	// })
 }
 const notifyErrChecking = (notifService: INotificationService): INotificationHandle => {
-	const message = `CymulateCodeEditor Error: There was an error checking for updates. If this persists, please get in touch or reinstall CymulateCodeEditor [here](https://voideditor.com/download-beta)!`
+	const message = `Void Error: There was an error checking for updates. If this persists, please get in touch or reinstall Void [here](https://voideditor.com/download-beta)!`
 	const notifController = notifService.notify({
 		severity: Severity.Info,
 		message: message,
@@ -137,31 +137,31 @@ const notifyErrChecking = (notifService: INotificationService): INotificationHan
 }
 
 
-const performCymulateCodeEditorCheck = async (
+const performVoidCheck = async (
 	explicit: boolean,
 	notifService: INotificationService,
-	voidUpdateService: ICymulateCodeEditorUpdateService,
+	voidUpdateService: IVoidUpdateService,
 	metricsService: IMetricsService,
 	updateService: IUpdateService,
 ): Promise<INotificationHandle | null> => {
 
 	const metricsTag = explicit ? 'Manual' : 'Auto'
 
-	metricsService.capture(`CymulateCodeEditor Update ${metricsTag}: Checking...`, {})
+	metricsService.capture(`Void Update ${metricsTag}: Checking...`, {})
 	const res = await voidUpdateService.check(explicit)
 	if (!res) {
 		const notifController = notifyErrChecking(notifService);
-		metricsService.capture(`CymulateCodeEditor Update ${metricsTag}: Error`, { res })
+		metricsService.capture(`Void Update ${metricsTag}: Error`, { res })
 		return notifController
 	}
 	else {
 		if (res.message) {
 			const notifController = notifyUpdate(res, notifService, updateService)
-			metricsService.capture(`CymulateCodeEditor Update ${metricsTag}: Yes`, { res })
+			metricsService.capture(`Void Update ${metricsTag}: Yes`, { res })
 			return notifController
 		}
 		else {
-			metricsService.capture(`CymulateCodeEditor Update ${metricsTag}: No`, { res })
+			metricsService.capture(`Void Update ${metricsTag}: No`, { res })
 			return null
 		}
 	}
@@ -176,19 +176,19 @@ registerAction2(class extends Action2 {
 	constructor() {
 		super({
 			f1: true,
-			id: 'cymulateCodeEditor.voidCheckUpdate',
-			title: localize2('cymulateCodeEditorCheckUpdate', 'CymulateCodeEditor: Check for Updates'),
+			id: 'void.voidCheckUpdate',
+			title: localize2('voidCheckUpdate', 'Void: Check for Updates'),
 		});
 	}
 	async run(accessor: ServicesAccessor): Promise<void> {
-		const voidUpdateService = accessor.get(ICymulateCodeEditorUpdateService)
+		const voidUpdateService = accessor.get(IVoidUpdateService)
 		const notifService = accessor.get(INotificationService)
 		const metricsService = accessor.get(IMetricsService)
 		const updateService = accessor.get(IUpdateService)
 
 		const currNotifController = lastNotifController
 
-		const newController = await performCymulateCodeEditorCheck(true, notifService, voidUpdateService, metricsService, updateService)
+		const newController = await performVoidCheck(true, notifService, voidUpdateService, metricsService, updateService)
 
 		if (newController) {
 			currNotifController?.close()
@@ -198,10 +198,10 @@ registerAction2(class extends Action2 {
 })
 
 // on mount
-class CymulateCodeEditorUpdateWorkbenchContribution extends Disposable implements IWorkbenchContribution {
+class VoidUpdateWorkbenchContribution extends Disposable implements IWorkbenchContribution {
 	static readonly ID = 'workbench.contrib.void.voidUpdate'
 	constructor(
-		@ICymulateCodeEditorUpdateService voidUpdateService: ICymulateCodeEditorUpdateService,
+		@IVoidUpdateService voidUpdateService: IVoidUpdateService,
 		@IMetricsService metricsService: IMetricsService,
 		@INotificationService notifService: INotificationService,
 		@IUpdateService updateService: IUpdateService,
@@ -209,7 +209,7 @@ class CymulateCodeEditorUpdateWorkbenchContribution extends Disposable implement
 		super()
 
 		const autoCheck = () => {
-			performCymulateCodeEditorCheck(false, notifService, voidUpdateService, metricsService, updateService)
+			performVoidCheck(false, notifService, voidUpdateService, metricsService, updateService)
 		}
 
 		// check once 5 seconds after mount
@@ -225,4 +225,4 @@ class CymulateCodeEditorUpdateWorkbenchContribution extends Disposable implement
 
 	}
 }
-registerWorkbenchContribution2(CymulateCodeEditorUpdateWorkbenchContribution.ID, CymulateCodeEditorUpdateWorkbenchContribution, WorkbenchPhase.BlockRestore);
+registerWorkbenchContribution2(VoidUpdateWorkbenchContribution.ID, VoidUpdateWorkbenchContribution, WorkbenchPhase.BlockRestore);

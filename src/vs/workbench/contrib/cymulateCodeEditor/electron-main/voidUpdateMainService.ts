@@ -7,12 +7,12 @@ import { Disposable } from '../../../../base/common/lifecycle.js';
 import { IEnvironmentMainService } from '../../../../platform/environment/electron-main/environmentMainService.js';
 import { IProductService } from '../../../../platform/product/common/productService.js';
 import { IUpdateService, StateType } from '../../../../platform/update/common/update.js';
-import { ICymulateCodeEditorUpdateService } from '../common/voidUpdateService.js';
-import { CymulateCodeEditorCheckUpdateRespose } from '../common/voidUpdateServiceTypes.js';
+import { IVoidUpdateService } from '../common/voidUpdateService.js';
+import { VoidCheckUpdateRespose } from '../common/voidUpdateServiceTypes.js';
 
 
 
-export class CymulateCodeEditorMainUpdateService extends Disposable implements ICymulateCodeEditorUpdateService {
+export class VoidMainUpdateService extends Disposable implements IVoidUpdateService {
 	_serviceBrand: undefined;
 
 	constructor(
@@ -24,7 +24,7 @@ export class CymulateCodeEditorMainUpdateService extends Disposable implements I
 	}
 
 
-	async check(explicit: boolean): Promise<CymulateCodeEditorCheckUpdateRespose> {
+	async check(explicit: boolean): Promise<VoidCheckUpdateRespose> {
 
 		const isDevMode = !this._envMainService.isBuilt // found in abstractUpdateService.ts
 
@@ -73,7 +73,7 @@ export class CymulateCodeEditorMainUpdateService extends Disposable implements I
 
 		if (this._updateService.state.type === StateType.Ready) {
 			// Update is ready
-			return { message: 'Restart CymulateCodeEditor to update!', action: 'restart' } as const
+			return { message: 'Restart Void to update!', action: 'restart' } as const
 		}
 
 		if (this._updateService.state.type === StateType.Disabled) {
@@ -87,7 +87,7 @@ export class CymulateCodeEditorMainUpdateService extends Disposable implements I
 
 
 
-	private async _manualCheckGHTagIfDisabled(explicit: boolean): Promise<CymulateCodeEditorCheckUpdateRespose> {
+	private async _manualCheckGHTagIfDisabled(explicit: boolean): Promise<VoidCheckUpdateRespose> {
 		try {
 			const response = await fetch('https://api.github.com/repos/voideditor/binaries/releases/latest');
 
@@ -106,11 +106,11 @@ export class CymulateCodeEditorMainUpdateService extends Disposable implements I
 			if (explicit) {
 				if (response.ok) {
 					if (!isUpToDate) {
-						message = 'A new version of CymulateCodeEditor is available! Please reinstall (auto-updates are disabled on this OS) - it only takes a second!'
+						message = 'A new version of Void is available! Please reinstall (auto-updates are disabled on this OS) - it only takes a second!'
 						action = 'reinstall'
 					}
 					else {
-						message = 'CymulateCodeEditor is up-to-date!'
+						message = 'Void is up-to-date!'
 					}
 				}
 				else {
@@ -121,7 +121,7 @@ export class CymulateCodeEditorMainUpdateService extends Disposable implements I
 			// not explicit
 			else {
 				if (response.ok && !isUpToDate) {
-					message = 'A new version of CymulateCodeEditor is available! Please reinstall (auto-updates are disabled on this OS) - it only takes a second!'
+					message = 'A new version of Void is available! Please reinstall (auto-updates are disabled on this OS) - it only takes a second!'
 					action = 'reinstall'
 				}
 				else {

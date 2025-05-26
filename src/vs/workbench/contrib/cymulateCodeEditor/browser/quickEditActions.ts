@@ -38,10 +38,10 @@ registerAction2(class extends Action2 {
 		super({
 			id: VOID_CTRL_K_ACTION_ID,
 			f1: true,
-			title: localize2('cymulateCodeEditorQuickEditAction', 'CymulateCodeEditor: Quick Edit'),
+			title: localize2('voidQuickEditAction', 'Void: Quick Edit'),
 			keybinding: {
 				primary: KeyMod.CtrlCmd | KeyCode.KeyK,
-				weight: KeybindingWeight.CymulateCodeEditorExtension,
+				weight: KeybindingWeight.VoidExtension,
 			}
 		});
 	}

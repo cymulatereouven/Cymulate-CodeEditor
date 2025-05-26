@@ -7,20 +7,20 @@ import { IFileService } from '../../../../platform/files/common/files.js';
 import { IClipboardService } from '../../../../platform/clipboard/common/clipboardService.js';
 import { IDirectoryStrService } from '../common/directoryStrService.js';
 import { messageOfSelection } from '../common/prompt/prompts.js';
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
+import { IVoidModelService } from '../common/voidModelService.js';
 
 
 
 class FilePromptActionService extends Action2 {
-	private static readonly VOID_COPY_FILE_PROMPT_ID = 'cymulateCodeEditor.copyfileprompt'
+	private static readonly VOID_COPY_FILE_PROMPT_ID = 'void.copyfileprompt'
 
 	constructor() {
 		super({
 			id: FilePromptActionService.VOID_COPY_FILE_PROMPT_ID,
-			title: localize2('cymulateCodeEditorCopyPrompt', 'CymulateCodeEditor: Copy Prompt'),
+			title: localize2('voidCopyPrompt', 'Void: Copy Prompt'),
 			menu: [{
 				id: MenuId.ExplorerContext,
-				group: '8_cymulateCodeEditor',
+				group: '8_void',
 				order: 1,
 			}]
 		});
@@ -31,7 +31,7 @@ class FilePromptActionService extends Action2 {
 			const fileService = accessor.get(IFileService);
 			const clipboardService = accessor.get(IClipboardService)
 			const directoryStrService = accessor.get(IDirectoryStrService)
-			const voidModelService = accessor.get(ICymulateCodeEditorModelService)
+			const voidModelService = accessor.get(IVoidModelService)
 
 			const stat = await fileService.stat(uri)
 

@@ -349,7 +349,7 @@ type InputBox2Props = {
 	onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 	onChangeHeight?: (newHeight: number) => void;
 }
-export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, InputBox2Props>(function X({ initValue, placeholder, multiline, enableAtToMention, fnsRef, className, onKeyDown, onFocus, onBlur, onChangeText }, ref) {
+export const VoidInputBox2 = forwardRef<HTMLTextAreaElement, InputBox2Props>(function X({ initValue, placeholder, multiline, enableAtToMention, fnsRef, className, onKeyDown, onFocus, onBlur, onChangeText }, ref) {
 
 
 	// mirrors whatever is in ref
@@ -748,7 +748,7 @@ export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, Input
 
 			disabled={!isEnabled}
 
-			className={`w-full resize-none max-h-[500px] overflow-y-auto text-cymulateCodeEditor-fg-1 placeholder:text-cymulateCodeEditor-fg-3 ${className}`}
+			className={`w-full resize-none max-h-[500px] overflow-y-auto text-void-fg-1 placeholder:text-void-fg-3 ${className}`}
 			style={{
 				// defaultInputBoxStyles
 				background: asCssVariable(inputBackground),
@@ -804,7 +804,7 @@ export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, Input
 		{isMenuOpen && (
 			<div
 				ref={refs.setFloating}
-				className="z-[100] border-cymulateCodeEditor-border-3 bg-cymulateCodeEditor-bg-2-alt border rounded shadow-lg flex flex-col overflow-hidden"
+				className="z-[100] border-void-border-3 bg-void-bg-2-alt border rounded shadow-lg flex flex-col overflow-hidden"
 				style={{
 					position: strategy,
 					top: y ?? 0,
@@ -814,7 +814,7 @@ export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, Input
 				onWheel={(e) => e.stopPropagation()}
 			>
 				{/* Breadcrumbs Header */}
-				{isBreadcrumbsShowing && <div className="px-2 py-1 text-cymulateCodeEditor-fg-1 bg-cymulateCodeEditor-bg-2-alt border-b border-cymulateCodeEditor-border-3 sticky top-0 bg-cymulateCodeEditor-bg-1 z-10 select-none pointer-events-none">
+				{isBreadcrumbsShowing && <div className="px-2 py-1 text-void-fg-1 bg-void-bg-2-alt border-b border-void-border-3 sticky top-0 bg-void-bg-1 z-10 select-none pointer-events-none">
 					{optionText ?
 						<div className="flex items-center">
 							{/* {optionPath.map((path, index) => (
@@ -834,7 +834,7 @@ export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, Input
 				<div className='max-h-[400px] w-full max-w-full overflow-y-auto overflow-x-auto'>
 					<div className="w-max min-w-full flex flex-col gap-0 text-nowrap flex-nowrap">
 						{options.length === 0 ?
-							<div className="text-cymulateCodeEditor-fg-3 px-3 py-0.5">No results found</div>
+							<div className="text-void-fg-3 px-3 py-0.5">No results found</div>
 							: options.map((o, oIdx) => {
 
 								return (
@@ -845,7 +845,7 @@ export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, Input
 										className={`
 											flex items-center gap-2
 											px-3 py-1 cursor-pointer
-											${oIdx === optionIdx ? 'bg-blue-500 text-white/80' : 'bg-cymulateCodeEditor-bg-2-alt text-cymulateCodeEditor-fg-1'}
+											${oIdx === optionIdx ? 'bg-blue-500 text-white/80' : 'bg-void-bg-2-alt text-void-fg-1'}
 										`}
 										onClick={() => { onSelectOption(); }}
 										onMouseMove={() => { setOptionIdx(oIdx) }}
@@ -873,7 +873,7 @@ export const CymulateCodeEditorInputBox2 = forwardRef<HTMLTextAreaElement, Input
 })
 
 
-export const CymulateCodeEditorSimpleInputBox = ({ value, onChangeValue, placeholder, className, disabled, passwordBlur, compact, ...inputProps }: {
+export const VoidSimpleInputBox = ({ value, onChangeValue, placeholder, className, disabled, passwordBlur, compact, ...inputProps }: {
 	value: string;
 	onChangeValue: (value: string) => void;
 	placeholder: string;
@@ -920,7 +920,7 @@ export const CymulateCodeEditorSimpleInputBox = ({ value, onChangeValue, placeho
 			onChange={handleChange}
 			placeholder={placeholder}
 			disabled={disabled}
-			className={`w-full resize-none bg-cymulateCodeEditor-bg-1 text-cymulateCodeEditor-fg-1 placeholder:text-cymulateCodeEditor-fg-3 border border-cymulateCodeEditor-border-2 focus:border-cymulateCodeEditor-border-1
+			className={`w-full resize-none bg-void-bg-1 text-void-fg-1 placeholder:text-void-fg-3 border border-void-border-2 focus:border-void-border-1
 				${compact ? 'py-1 px-2' : 'py-2 px-4 '}
 				rounded
 				${disabled ? 'opacity-50 cursor-not-allowed' : ''}
@@ -937,7 +937,7 @@ export const CymulateCodeEditorSimpleInputBox = ({ value, onChangeValue, placeho
 };
 
 
-export const CymulateCodeEditorInputBox = ({ onChangeText, onCreateInstance, inputBoxRef, placeholder, isPasswordField, multiline }: {
+export const VoidInputBox = ({ onChangeText, onCreateInstance, inputBoxRef, placeholder, isPasswordField, multiline }: {
 	onChangeText: (value: string) => void;
 	styles?: Partial<IInputBoxStyles>,
 	onCreateInstance?: (instance: InputBox) => void | IDisposable[];
@@ -953,8 +953,8 @@ export const CymulateCodeEditorInputBox = ({ onChangeText, onCreateInstance, inp
 	return <WidgetComponent
 		ctor={InputBox}
 		className='
-			bg-cymulateCodeEditor-bg-1
-			@@cymulateCodeEditor-force-child-placeholder-cymulateCodeEditor-fg-1
+			bg-void-bg-1
+			@@void-force-child-placeholder-void-fg-1
 		'
 		propsFn={useCallback((container) => [
 			container,
@@ -1000,7 +1000,7 @@ export const CymulateCodeEditorInputBox = ({ onChangeText, onCreateInstance, inp
 
 
 
-export const CymulateCodeEditorSlider = ({
+export const VoidSlider = ({
 	value,
 	onChange,
 	size = 'md',
@@ -1104,7 +1104,7 @@ export const CymulateCodeEditorSlider = ({
 							size === 'xs' ? 'h-1' :
 								size === 'sm' ? 'h-1.5' :
 									size === 'sm+' ? 'h-2' : 'h-2.5'
-							} bg-cymulateCodeEditor-bg-2 rounded-full cursor-pointer`}
+							} bg-void-bg-2 rounded-full cursor-pointer`}
 						onClick={handleTrackClick}
 					>
 						{/* Filled part of track */}
@@ -1113,7 +1113,7 @@ export const CymulateCodeEditorSlider = ({
 								size === 'xs' ? 'h-1' :
 									size === 'sm' ? 'h-1.5' :
 										size === 'sm+' ? 'h-2' : 'h-2.5'
-								} bg-cymulateCodeEditor-fg-1 rounded-full`}
+								} bg-void-fg-1 rounded-full`}
 							style={{ width: `${percentage}%` }}
 						/>
 					</div>
@@ -1126,8 +1126,8 @@ export const CymulateCodeEditorSlider = ({
 									size === 'sm' ? 'h-3 w-3' :
 										size === 'sm+' ? 'h-3.5 w-3.5' : 'h-4 w-4'
 							}
-							bg-cymulateCodeEditor-fg-1 rounded-full shadow-md ${disabled ? 'cursor-not-allowed' : 'cursor-grab active:cursor-grabbing'}
-							border border-cymulateCodeEditor-fg-1`}
+							bg-void-fg-1 rounded-full shadow-md ${disabled ? 'cursor-not-allowed' : 'cursor-grab active:cursor-grabbing'}
+							border border-void-fg-1`}
 						style={{ left: `${percentage}%`, zIndex: 2 }}  // Ensure thumb is above the invisible clickable area
 						onMouseDown={(e) => {
 							if (disabled) return;
@@ -1161,7 +1161,7 @@ export const CymulateCodeEditorSlider = ({
 
 
 
-export const CymulateCodeEditorSwitch = ({
+export const VoidSwitch = ({
 	value,
 	onChange,
 	size = 'md',
@@ -1213,7 +1213,7 @@ export const CymulateCodeEditorSwitch = ({
 
 
 
-export const CymulateCodeEditorCheckBox = ({ label, value, onClick, className }: { label: string, value: boolean, onClick: (checked: boolean) => void, className?: string }) => {
+export const VoidCheckBox = ({ label, value, onClick, className }: { label: string, value: boolean, onClick: (checked: boolean) => void, className?: string }) => {
 	const divRef = useRef<HTMLDivElement | null>(null)
 	const instanceRef = useRef<Checkbox | null>(null)
 
@@ -1247,7 +1247,7 @@ export const CymulateCodeEditorCheckBox = ({ label, value, onClick, className }:
 
 
 
-export const CymulateCodeEditorCustomDropdownBox = <T extends NonNullable<any>>({
+export const VoidCustomDropdownBox = <T extends NonNullable<any>>({
 	options,
 	selectedOption,
 	onChangeOption,
@@ -1412,7 +1412,7 @@ export const CymulateCodeEditorCustomDropdownBox = <T extends NonNullable<any>>(
 			{isOpen && (
 				<div
 					ref={refs.setFloating}
-					className="z-[100] bg-cymulateCodeEditor-bg-1 border-cymulateCodeEditor-border-3 border rounded shadow-lg"
+					className="z-[100] bg-void-bg-1 border-void-border-3 border rounded shadow-lg"
 					style={{
 						position: strategy,
 						top: y ?? 0,
@@ -1474,7 +1474,7 @@ export const CymulateCodeEditorCustomDropdownBox = <T extends NonNullable<any>>(
 
 
 
-export const _CymulateCodeEditorSelectBox = <T,>({ onChangeSelection, onCreateInstance, selectBoxRef, options, className }: {
+export const _VoidSelectBox = <T,>({ onChangeSelection, onCreateInstance, selectBoxRef, options, className }: {
 	onChangeSelection: (value: T) => void;
 	onCreateInstance?: ((instance: SelectBox) => void | IDisposable[]);
 	selectBoxRef?: React.MutableRefObject<SelectBox | null>;
@@ -1489,9 +1489,9 @@ export const _CymulateCodeEditorSelectBox = <T,>({ onChangeSelection, onCreateIn
 	return <WidgetComponent
 		className={`
 			@@select-child-restyle
-			@@[&_select]:!cymulateCodeEditor-text-cymulateCodeEditor-fg-3
-			@@[&_select]:!cymulateCodeEditor-text-xs
-			!text-cymulateCodeEditor-fg-3
+			@@[&_select]:!void-text-void-fg-3
+			@@[&_select]:!void-text-xs
+			!text-void-fg-3
 			${className ?? ''}
 		`}
 		ctor={SelectBox}
@@ -1611,7 +1611,7 @@ export const BlockCode = ({ initValue, language, maxHeight, showScrollbars }: Bl
 		if (language) modelRef.current?.setLanguage(language)
 	}, [language])
 
-	return <div ref={divRef} className='relative z-0 px-2 py-1 bg-cymulateCodeEditor-bg-3'>
+	return <div ref={divRef} className='relative z-0 px-2 py-1 bg-void-bg-3'>
 		<WidgetComponent
 			className='@@bg-editor-style-override' // text-sm
 			ctor={useCallback((container) => {
@@ -1712,14 +1712,14 @@ export const BlockCode = ({ initValue, language, maxHeight, showScrollbars }: Bl
 }
 
 
-export const CymulateCodeEditorButtonBgDarken = ({ children, disabled, onClick, className }: { children: React.ReactNode; disabled?: boolean; onClick: () => void; className?: string }) => {
+export const VoidButtonBgDarken = ({ children, disabled, onClick, className }: { children: React.ReactNode; disabled?: boolean; onClick: () => void; className?: string }) => {
 	return <button disabled={disabled}
 		className={`px-3 py-1 bg-black/10 dark:bg-white/10 rounded-sm overflow-hidden whitespace-nowrap flex items-center justify-center ${className || ''}`}
 		onClick={onClick}
 	>{children}</button>
 }
 
-// export const CymulateCodeEditorScrollableElt = ({ options, children }: { options: ScrollableElementCreationOptions, children: React.ReactNode }) => {
+// export const VoidScrollableElt = ({ options, children }: { options: ScrollableElementCreationOptions, children: React.ReactNode }) => {
 // 	const instanceRef = useRef<DomScrollableElement | null>(null);
 // 	const [childrenPortal, setChildrenPortal] = useState<React.ReactNode | null>(null)
 
@@ -1746,7 +1746,7 @@ export const CymulateCodeEditorButtonBgDarken = ({ children, disabled, onClick, 
 // 	</>
 // }
 
-// export const CymulateCodeEditorSelectBox = <T,>({ onChangeSelection, initVal, selectBoxRef, options }: {
+// export const VoidSelectBox = <T,>({ onChangeSelection, initVal, selectBoxRef, options }: {
 // 	initVal: T;
 // 	selectBoxRef: React.MutableRefObject<SelectBox | null>;
 // 	options: readonly { text: string, value: T }[];
@@ -1789,7 +1789,7 @@ export const CymulateCodeEditorButtonBgDarken = ({ children, disabled, onClick, 
 
 
 
-// export const CymulateCodeEditorCheckBox = ({ onChangeChecked, initVal, label, checkboxRef, }: {
+// export const VoidCheckBox = ({ onChangeChecked, initVal, label, checkboxRef, }: {
 // 	onChangeChecked: (checked: boolean) => void;
 // 	initVal: boolean;
 // 	checkboxRef: React.MutableRefObject<ObjectSettingCheckboxWidget | null>;

@@ -9,15 +9,15 @@ import { ISearchService } from '../../../services/search/common/search.js'
 import { IEditCodeService } from './editCodeServiceInterface.js'
 import { ITerminalToolService } from './terminalToolService.js'
 import { LintErrorItem, ToolCallParams, ToolResultType } from '../common/toolsServiceTypes.js'
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js'
+import { IVoidModelService } from '../common/voidModelService.js'
 import { EndOfLinePreference } from '../../../../editor/common/model.js'
-import { ICymulateCodeEditorCommandBarService } from './voidCommandBarService.js'
+import { IVoidCommandBarService } from './voidCommandBarService.js'
 import { computeDirectoryTree1Deep, IDirectoryStrService, stringifyDirectoryTree1Deep } from '../common/directoryStrService.js'
 import { IMarkerService, MarkerSeverity } from '../../../../platform/markers/common/markers.js'
 import { timeout } from '../../../../base/common/async.js'
 import { RawToolParamsObj } from '../common/sendLLMMessageTypes.js'
 import { MAX_CHILDREN_URIs_PAGE, MAX_FILE_CHARS_PAGE, MAX_TERMINAL_BG_COMMAND_TIME, MAX_TERMINAL_INACTIVE_TIME, ToolName } from '../common/prompt/prompts.js'
-import { ICymulateCodeEditorSettingsService } from '../common/voidSettingsService.js'
+import { IVoidSettingsService } from '../common/voidSettingsService.js'
 import { generateUuid } from '../../../../base/common/uuid.js'
 
 
@@ -130,13 +130,13 @@ export class ToolsService implements IToolsService {
 		@IWorkspaceContextService workspaceContextService: IWorkspaceContextService,
 		@ISearchService searchService: ISearchService,
 		@IInstantiationService instantiationService: IInstantiationService,
-		@ICymulateCodeEditorModelService voidModelService: ICymulateCodeEditorModelService,
+		@IVoidModelService voidModelService: IVoidModelService,
 		@IEditCodeService editCodeService: IEditCodeService,
 		@ITerminalToolService private readonly terminalToolService: ITerminalToolService,
-		@ICymulateCodeEditorCommandBarService private readonly commandBarService: ICymulateCodeEditorCommandBarService,
+		@IVoidCommandBarService private readonly commandBarService: IVoidCommandBarService,
 		@IDirectoryStrService private readonly directoryStrService: IDirectoryStrService,
 		@IMarkerService private readonly markerService: IMarkerService,
-		@ICymulateCodeEditorSettingsService private readonly voidSettingsService: ICymulateCodeEditorSettingsService,
+		@IVoidSettingsService private readonly voidSettingsService: IVoidSettingsService,
 	) {
 
 		const queryBuilder = instantiationService.createInstance(QueryBuilder);
@@ -524,7 +524,7 @@ export class ToolsService implements IToolsService {
 				}
 				// normal command
 				if (resolveReason.type === 'timeout') {
-					return `${result_}\nTerminal command ran, but was automatically killed by CymulateCodeEditor after ${MAX_TERMINAL_INACTIVE_TIME}s of inactivity and did not finish successfully. To try with more time, open a persistent terminal and run the command there.`
+					return `${result_}\nTerminal command ran, but was automatically killed by Void after ${MAX_TERMINAL_INACTIVE_TIME}s of inactivity and did not finish successfully. To try with more time, open a persistent terminal and run the command there.`
 				}
 				throw new Error(`Unexpected internal error: Terminal command did not resolve with a valid reason.`)
 			},

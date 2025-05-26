@@ -12,7 +12,7 @@ import { IMainProcessService } from '../../../../platform/ipc/common/mainProcess
 import { generateUuid } from '../../../../base/common/uuid.js';
 import { Event } from '../../../../base/common/event.js';
 import { Disposable } from '../../../../base/common/lifecycle.js';
-import { ICymulateCodeEditorSettingsService } from './voidSettingsService.js';
+import { IVoidSettingsService } from './voidSettingsService.js';
 
 // calls channel to implement features
 export const ILLMMessageService = createDecorator<ILLMMessageService>('llmMessageService');
@@ -59,14 +59,14 @@ export class LLMMessageService extends Disposable implements ILLMMessageService 
 
 	constructor(
 		@IMainProcessService private readonly mainProcessService: IMainProcessService, // used as a renderer (only usable on client side)
-		@ICymulateCodeEditorSettingsService private readonly voidSettingsService: ICymulateCodeEditorSettingsService,
+		@IVoidSettingsService private readonly voidSettingsService: IVoidSettingsService,
 		// @INotificationService private readonly notificationService: INotificationService,
 	) {
 		super()
 
-		// const service = ProxyChannel.toService<LLMMessageChannel>(mainProcessService.getChannel('cymulateCodeEditor-channel-sendLLMMessage')); // lets you call it like a service
+		// const service = ProxyChannel.toService<LLMMessageChannel>(mainProcessService.getChannel('void-channel-sendLLMMessage')); // lets you call it like a service
 		// see llmMessageChannel.ts
-		this.channel = this.mainProcessService.getChannel('cymulateCodeEditor-channel-llmMessage')
+		this.channel = this.mainProcessService.getChannel('void-channel-llmMessage')
 
 		// .listen sets up an IPC channel and takes a few ms, so we set up listeners immediately and add hooks to them instead
 		// llm
@@ -103,7 +103,7 @@ export class LLMMessageService extends Disposable implements ILLMMessageService 
 
 		// throw an error if no model/provider selected (this should usually never be reached, the UI should check this first, but might happen in cases like Apply where we haven't built much UI/checks yet, good practice to have check logic on backend)
 		if (modelSelection === null) {
-			const message = `Please add a provider in CymulateCodeEditor's Settings.`
+			const message = `Please add a provider in Void's Settings.`
 			onError({ message, fullError: null })
 			return null
 		}

@@ -15,7 +15,7 @@ import { chat_userMessageContent, ToolName, } from '../common/prompt/prompts.js'
 import { AnthropicReasoning, getErrorMessage, RawToolCallObj, RawToolParamsObj } from '../common/sendLLMMessageTypes.js';
 import { generateUuid } from '../../../../base/common/uuid.js';
 import { FeatureName, ModelSelection, ModelSelectionOptions } from '../common/voidSettingsTypes.js';
-import { ICymulateCodeEditorSettingsService } from '../common/voidSettingsService.js';
+import { IVoidSettingsService } from '../common/voidSettingsService.js';
 import { approvalTypeOfToolName, ToolCallParams, ToolResultType } from '../common/toolsServiceTypes.js';
 import { IToolsService } from './toolsService.js';
 import { CancellationToken } from '../../../../base/common/cancellation.js';
@@ -24,10 +24,10 @@ import { ChatMessage, CheckpointEntry, CodespanLocationLink, StagingSelectionIte
 import { Position } from '../../../../editor/common/core/position.js';
 import { IMetricsService } from '../common/metricsService.js';
 import { shorten } from '../../../../base/common/labels.js';
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
+import { IVoidModelService } from '../common/voidModelService.js';
 import { findLast, findLastIdx } from '../../../../base/common/arraysFind.js';
 import { IEditCodeService } from './editCodeServiceInterface.js';
-import { CymulateCodeEditorFileSnapshot } from '../common/editCodeServiceTypes.js';
+import { VoidFileSnapshot } from '../common/editCodeServiceTypes.js';
 import { INotificationService, Severity } from '../../../../platform/notification/common/notification.js';
 import { truncate } from '../../../../base/common/strings.js';
 import { THREAD_STORAGE_KEY } from '../common/storageKeys.js';
@@ -290,7 +290,7 @@ export interface IChatThreadService {
 	blurCurrentChat: () => Promise<void>
 }
 
-export const IChatThreadService = createDecorator<IChatThreadService>('cymulateCodeEditorChatThreadService');
+export const IChatThreadService = createDecorator<IChatThreadService>('voidChatThreadService');
 class ChatThreadService extends Disposable implements IChatThreadService {
 	_serviceBrand: undefined;
 
@@ -311,10 +311,10 @@ class ChatThreadService extends Disposable implements IChatThreadService {
 
 	constructor(
 		@IStorageService private readonly _storageService: IStorageService,
-		@ICymulateCodeEditorModelService private readonly _voidModelService: ICymulateCodeEditorModelService,
+		@IVoidModelService private readonly _voidModelService: IVoidModelService,
 		@ILLMMessageService private readonly _llmMessageService: ILLMMessageService,
 		@IToolsService private readonly _toolsService: IToolsService,
-		@ICymulateCodeEditorSettingsService private readonly _settingsService: ICymulateCodeEditorSettingsService,
+		@IVoidSettingsService private readonly _settingsService: IVoidSettingsService,
 		@ILanguageFeaturesService private readonly _languageFeaturesService: ILanguageFeaturesService,
 		@IMetricsService private readonly _metricsService: IMetricsService,
 		@IEditCodeService private readonly _editCodeService: IEditCodeService,
@@ -439,11 +439,11 @@ class ChatThreadService extends Disposable implements IChatThreadService {
 			// set streamState
 			const messages = newState.allThreads[threadId]?.messages
 			const lastMessage = messages && messages[messages.length - 1]
-			// if awaiting user but stream state doesn't indicate it (happens if restart CymulateCodeEditor)
+			// if awaiting user but stream state doesn't indicate it (happens if restart Void)
 			if (lastMessage && lastMessage.role === 'tool' && lastMessage.type === 'tool_request')
 				this._setStreamState(threadId, { isRunning: 'awaiting_user', })
 
-			// if running now but stream state doesn't indicate it (happens if restart CymulateCodeEditor), cancel that last tool
+			// if running now but stream state doesn't indicate it (happens if restart Void), cancel that last tool
 			if (lastMessage && lastMessage.role === 'tool' && lastMessage.type === 'running_now') {
 				this._updateLatestTool(threadId, { role: 'tool', type: 'rejected', content: lastMessage.content, id: lastMessage.id, rawParams: lastMessage.rawParams, result: null, name: lastMessage.name, params: lastMessage.params })
 			}
@@ -902,8 +902,8 @@ class ChatThreadService extends Disposable implements IChatThreadService {
 		const voidFileSnapshot = checkpointMessage.voidFileSnapshotOfURI ? checkpointMessage.voidFileSnapshotOfURI[fsPath] ?? null : null
 		if (!opts.includeUserModifiedChanges) { return { voidFileSnapshot, } }
 
-		const userModifiedCymulateCodeEditorFileSnapshot = fsPath in checkpointMessage.userModifications.voidFileSnapshotOfURI ? checkpointMessage.userModifications.voidFileSnapshotOfURI[fsPath] ?? null : null
-		return { voidFileSnapshot: userModifiedCymulateCodeEditorFileSnapshot ?? voidFileSnapshot, }
+		const userModifiedVoidFileSnapshot = fsPath in checkpointMessage.userModifications.voidFileSnapshotOfURI ? checkpointMessage.userModifications.voidFileSnapshotOfURI[fsPath] ?? null : null
+		return { voidFileSnapshot: userModifiedVoidFileSnapshot ?? voidFileSnapshot, }
 	}
 
 	private _computeNewCheckpointInfo({ threadId }: { threadId: string }) {
@@ -913,7 +913,7 @@ class ChatThreadService extends Disposable implements IChatThreadService {
 		const lastCheckpointIdx = findLastIdx(thread.messages, (m) => m.role === 'checkpoint') ?? -1
 		if (lastCheckpointIdx === -1) return
 
-		const voidFileSnapshotOfURI: { [fsPath: string]: CymulateCodeEditorFileSnapshot | undefined } = {}
+		const voidFileSnapshotOfURI: { [fsPath: string]: VoidFileSnapshot | undefined } = {}
 
 		// add a change for all the URIs in the checkpoint history
 		const { lastIdxOfURI } = this._getCheckpointsBetween({ threadId, loIdx: 0, hiIdx: lastCheckpointIdx, }) ?? {}
@@ -925,11 +925,11 @@ class ChatThreadService extends Disposable implements IChatThreadService {
 			if (checkpoint2.role !== 'checkpoint') continue
 			const res = this._getCheckpointInfo(checkpoint2, fsPath, { includeUserModifiedChanges: false })
 			if (!res) continue
-			const { voidFileSnapshot: oldCymulateCodeEditorFileSnapshot } = res
+			const { voidFileSnapshot: oldVoidFileSnapshot } = res
 
 			// if there was any change to the str or diffAreaSnapshot, update. rough approximation of equality, oldDiffAreasSnapshot === diffAreasSnapshot is not perfect
-			const voidFileSnapshot = this._editCodeService.getCymulateCodeEditorFileSnapshot(URI.file(fsPath))
-			if (oldCymulateCodeEditorFileSnapshot === voidFileSnapshot) continue
+			const voidFileSnapshot = this._editCodeService.getVoidFileSnapshot(URI.file(fsPath))
+			if (oldVoidFileSnapshot === voidFileSnapshot) continue
 			voidFileSnapshotOfURI[fsPath] = voidFileSnapshot
 		}
 
@@ -960,7 +960,7 @@ class ChatThreadService extends Disposable implements IChatThreadService {
 		if (!thread) return
 		const { model } = this._voidModelService.getModel(uri)
 		if (!model) return // should never happen
-		const diffAreasSnapshot = this._editCodeService.getCymulateCodeEditorFileSnapshot(uri)
+		const diffAreasSnapshot = this._editCodeService.getVoidFileSnapshot(uri)
 		this._addCheckpoint(threadId, {
 			role: 'checkpoint',
 			type: 'tool_edit',
@@ -1095,7 +1095,7 @@ We only need to do it for files that were edited since `to`, ie files between to
 					if (!res) continue
 					const { voidFileSnapshot } = res
 					if (!voidFileSnapshot) continue
-					this._editCodeService.restoreCymulateCodeEditorFileSnapshot(URI.file(fsPath), voidFileSnapshot)
+					this._editCodeService.restoreVoidFileSnapshot(URI.file(fsPath), voidFileSnapshot)
 					break
 				}
 			}
@@ -1129,7 +1129,7 @@ We only need to do it for files that were edited since `from`, ie files between 
 					if (!res) continue
 					const { voidFileSnapshot } = res
 					if (!voidFileSnapshot) continue
-					this._editCodeService.restoreCymulateCodeEditorFileSnapshot(URI.file(fsPath), voidFileSnapshot)
+					this._editCodeService.restoreVoidFileSnapshot(URI.file(fsPath), voidFileSnapshot)
 					break
 				}
 			}
@@ -1155,7 +1155,7 @@ We only need to do it for files that were edited since `from`, ie files between 
 				sticky: true,
 				actions: {
 					primary: [{
-						id: 'cymulateCodeEditor.goToChat',
+						id: 'void.goToChat',
 						enabled: true,
 						label: `Jump to Chat`,
 						tooltip: '',

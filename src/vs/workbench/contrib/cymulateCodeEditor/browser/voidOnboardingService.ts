@@ -7,7 +7,7 @@ import { Disposable, toDisposable } from '../../../../base/common/lifecycle.js';
 import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
 import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
 import { ServicesAccessor } from '../../../../editor/browser/editorExtensions.js';
-import { mountCymulateCodeEditorOnboarding } from './react/out/cymulateCodeEditor-onboarding/index.js'
+import { mountVoidOnboarding } from './react/out/void-onboarding/index.js'
 import { h, getActiveWindow } from '../../../../base/browser/dom.js';
 
 // Onboarding contribution that mounts the component at startup
@@ -30,10 +30,10 @@ export class OnboardingContribution extends Disposable implements IWorkbenchCont
 
 		if (workbench) {
 
-			const onboardingContainer = h('div.cymulateCodeEditor-onboarding-container').root;
+			const onboardingContainer = h('div.void-onboarding-container').root;
 			workbench.appendChild(onboardingContainer);
 			this.instantiationService.invokeFunction((accessor: ServicesAccessor) => {
-				const result = mountCymulateCodeEditorOnboarding(onboardingContainer, accessor);
+				const result = mountVoidOnboarding(onboardingContainer, accessor);
 				if (result && typeof result.dispose === 'function') {
 					this._register(toDisposable(result.dispose));
 				}

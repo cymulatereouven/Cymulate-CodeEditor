@@ -4,16 +4,16 @@
  *--------------------------------------------------------------------------------------*/
 
 // past values:
-// 'cymulateCodeEditor.settingsServiceStorage'
-// 'cymulateCodeEditor.settingsServiceStorageI' // 1.0.2
+// 'void.settingsServiceStorage'
+// 'void.settingsServiceStorageI' // 1.0.2
 
 // 1.0.3
-export const VOID_SETTINGS_STORAGE_KEY = 'cymulateCodeEditor.settingsServiceStorageII'
+export const VOID_SETTINGS_STORAGE_KEY = 'void.settingsServiceStorageII'
 
 
 // past values:
-// 'cymulateCodeEditor.chatThreadStorage'
-// 'cymulateCodeEditor.chatThreadStorageI' // 1.0.2
+// 'void.chatThreadStorage'
+// 'void.chatThreadStorageI' // 1.0.2
 
 // 1.0.3
-export const THREAD_STORAGE_KEY = 'cymulateCodeEditor.chatThreadStorageII'
+export const THREAD_STORAGE_KEY = 'void.chatThreadStorageII'

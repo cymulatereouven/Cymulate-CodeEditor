@@ -13,7 +13,7 @@ import { IStorageService, StorageScope, StorageTarget } from '../../../../platfo
 import { IMetricsService } from './metricsService.js';
 import { defaultProviderSettings, getModelCapabilities, ModelOverrides } from './modelCapabilities.js';
 import { VOID_SETTINGS_STORAGE_KEY } from './storageKeys.js';
-import { defaultSettingsOfProvider, FeatureName, ProviderName, ModelSelectionOfFeature, SettingsOfProvider, SettingName, providerNames, ModelSelection, modelSelectionsEqual, featureNames, CymulateCodeEditorStatefulModelInfo, GlobalSettings, GlobalSettingName, defaultGlobalSettings, ModelSelectionOptions, OptionsOfModelSelection, ChatMode, OverridesOfModel, defaultOverridesOfModel } from './voidSettingsTypes.js';
+import { defaultSettingsOfProvider, FeatureName, ProviderName, ModelSelectionOfFeature, SettingsOfProvider, SettingName, providerNames, ModelSelection, modelSelectionsEqual, featureNames, VoidStatefulModelInfo, GlobalSettings, GlobalSettingName, defaultGlobalSettings, ModelSelectionOptions, OptionsOfModelSelection, ChatMode, OverridesOfModel, defaultOverridesOfModel } from './voidSettingsTypes.js';
 
 
 // name is the name in the dropdown
@@ -37,7 +37,7 @@ type SetGlobalSettingFn = <T extends GlobalSettingName>(settingName: T, newVal: 
 type SetOptionsOfModelSelection = (featureName: FeatureName, providerName: ProviderName, modelName: string, newVal: Partial<ModelSelectionOptions>) => void
 
 
-export type CymulateCodeEditorSettingsState = {
+export type VoidSettingsState = {
 	readonly settingsOfProvider: SettingsOfProvider; // optionsOfProvider
 	readonly modelSelectionOfFeature: ModelSelectionOfFeature; // stateOfFeature
 	readonly optionsOfModelSelection: OptionsOfModelSelection;
@@ -47,13 +47,13 @@ export type CymulateCodeEditorSettingsState = {
 	readonly _modelOptions: ModelOption[] // computed based on the two above items
 }
 
-// type RealCymulateCodeEditorSettings = Exclude<keyof CymulateCodeEditorSettingsState, '_modelOptions'>
-// type EventProp<T extends RealCymulateCodeEditorSettings = RealCymulateCodeEditorSettings> = T extends 'globalSettings' ? [T, keyof CymulateCodeEditorSettingsState[T]] : T | 'all'
+// type RealVoidSettings = Exclude<keyof VoidSettingsState, '_modelOptions'>
+// type EventProp<T extends RealVoidSettings = RealVoidSettings> = T extends 'globalSettings' ? [T, keyof VoidSettingsState[T]] : T | 'all'
 
 
-export interface ICymulateCodeEditorSettingsService {
+export interface IVoidSettingsService {
 	readonly _serviceBrand: undefined;
-	readonly state: CymulateCodeEditorSettingsState; // in order to play nicely with react, you should immutably change state
+	readonly state: VoidSettingsState; // in order to play nicely with react, you should immutably change state
 	readonly waitForInitState: Promise<void>;
 
 	onDidChangeState: Event<void>;
@@ -66,7 +66,7 @@ export interface ICymulateCodeEditorSettingsService {
 	// setting to undefined CLEARS it, unlike others:
 	setOverridesOfModel(providerName: ProviderName, modelName: string, overrides: Partial<ModelOverrides> | undefined): Promise<void>;
 
-	dangerousSetState(newState: CymulateCodeEditorSettingsState): Promise<void>;
+	dangerousSetState(newState: VoidSettingsState): Promise<void>;
 	resetState(): Promise<void>;
 
 	setAutodetectedModels(providerName: ProviderName, modelNames: string[], logging: object): void;
@@ -78,10 +78,10 @@ export interface ICymulateCodeEditorSettingsService {
 
 
 
-const _modelsWithSwappedInNewModels = (options: { existingModels: CymulateCodeEditorStatefulModelInfo[], models: string[], type: 'autodetected' | 'default' }) => {
+const _modelsWithSwappedInNewModels = (options: { existingModels: VoidStatefulModelInfo[], models: string[], type: 'autodetected' | 'default' }) => {
 	const { existingModels, models, type } = options
 
-	const existingModelsMap: Record<string, CymulateCodeEditorStatefulModelInfo> = {}
+	const existingModelsMap: Record<string, VoidStatefulModelInfo> = {}
 	for (const existingModel of existingModels) {
 		existingModelsMap[existingModel.modelName] = existingModel
 	}
@@ -113,7 +113,7 @@ export const modelFilterOfFeatureName: {
 }
 
 
-const _stateWithMergedDefaultModels = (state: CymulateCodeEditorSettingsState): CymulateCodeEditorSettingsState => {
+const _stateWithMergedDefaultModels = (state: VoidSettingsState): VoidSettingsState => {
 	let newSettingsOfProvider = state.settingsOfProvider
 
 	// recompute default models
@@ -136,7 +136,7 @@ const _stateWithMergedDefaultModels = (state: CymulateCodeEditorSettingsState): 
 	}
 }
 
-const _validatedModelState = (state: Omit<CymulateCodeEditorSettingsState, '_modelOptions'>): CymulateCodeEditorSettingsState => {
+const _validatedModelState = (state: Omit<VoidSettingsState, '_modelOptions'>): VoidSettingsState => {
 
 	let newSettingsOfProvider = state.settingsOfProvider
 
@@ -195,7 +195,7 @@ const _validatedModelState = (state: Omit<CymulateCodeEditorSettingsState, '_mod
 		modelSelectionOfFeature: newModelSelectionOfFeature,
 		overridesOfModel: state.overridesOfModel,
 		_modelOptions: newModelOptions,
-	} satisfies CymulateCodeEditorSettingsState
+	} satisfies VoidSettingsState
 
 	return newState
 }
@@ -205,7 +205,7 @@ const _validatedModelState = (state: Omit<CymulateCodeEditorSettingsState, '_mod
 
 
 const defaultState = () => {
-	const d: CymulateCodeEditorSettingsState = {
+	const d: VoidSettingsState = {
 		settingsOfProvider: deepClone(defaultSettingsOfProvider),
 		modelSelectionOfFeature: { 'Chat': null, 'Ctrl+K': null, 'Autocomplete': null, 'Apply': null },
 		globalSettings: deepClone(defaultGlobalSettings),
@@ -217,14 +217,14 @@ const defaultState = () => {
 }
 
 
-export const ICymulateCodeEditorSettingsService = createDecorator<ICymulateCodeEditorSettingsService>('CymulateCodeEditorSettingsService');
-class CymulateCodeEditorSettingsService extends Disposable implements ICymulateCodeEditorSettingsService {
+export const IVoidSettingsService = createDecorator<IVoidSettingsService>('VoidSettingsService');
+class VoidSettingsService extends Disposable implements IVoidSettingsService {
 	_serviceBrand: undefined;
 
 	private readonly _onDidChangeState = new Emitter<void>();
 	readonly onDidChangeState: Event<void> = this._onDidChangeState.event; // this is primarily for use in react, so react can listen + update on state changes
 
-	state: CymulateCodeEditorSettingsState;
+	state: VoidSettingsState;
 
 	private readonly _resolver: () => void
 	waitForInitState: Promise<void> // await this if you need a valid state initially
@@ -250,7 +250,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 
 
 
-	dangerousSetState = async (newState: CymulateCodeEditorSettingsState) => {
+	dangerousSetState = async (newState: VoidSettingsState) => {
 		this.state = _validatedModelState(newState)
 		await this._storeState()
 		this._onDidChangeState.fire()
@@ -264,7 +264,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 
 
 	async readAndInitializeState() {
-		let readS: CymulateCodeEditorSettingsState
+		let readS: VoidSettingsState
 		try {
 			readS = await this._readState();
 			// 1.0.3 addition, remove when enough users have had this code run
@@ -327,7 +327,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 	}
 
 
-	private async _readState(): Promise<CymulateCodeEditorSettingsState> {
+	private async _readState(): Promise<VoidSettingsState> {
 		const encryptedState = this._storageService.get(VOID_SETTINGS_STORAGE_KEY, StorageScope.APPLICATION)
 
 		if (!encryptedState)
@@ -385,7 +385,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 	}
 
 	setGlobalSetting: SetGlobalSettingFn = async (settingName, newVal) => {
-		const newState: CymulateCodeEditorSettingsState = {
+		const newState: VoidSettingsState = {
 			...this.state,
 			globalSettings: {
 				...this.state.globalSettings,
@@ -402,7 +402,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 
 
 	setModelSelectionOfFeature: SetModelSelectionOfFeatureFn = async (featureName, newVal) => {
-		const newState: CymulateCodeEditorSettingsState = {
+		const newState: VoidSettingsState = {
 			...this.state,
 			modelSelectionOfFeature: {
 				...this.state.modelSelectionOfFeature,
@@ -423,7 +423,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 
 
 	setOptionsOfModelSelection = async (featureName: FeatureName, providerName: ProviderName, modelName: string, newVal: Partial<ModelSelectionOptions>) => {
-		const newState: CymulateCodeEditorSettingsState = {
+		const newState: VoidSettingsState = {
 			...this.state,
 			optionsOfModelSelection: {
 				...this.state.optionsOfModelSelection,
@@ -446,7 +446,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 	}
 
 	setOverridesOfModel = async (providerName: ProviderName, modelName: string, overrides: Partial<ModelOverrides> | undefined) => {
-		const newState: CymulateCodeEditorSettingsState = {
+		const newState: VoidSettingsState = {
 			...this.state,
 			overridesOfModel: {
 				...this.state.overridesOfModel,
@@ -493,7 +493,7 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 		const modelIdx = models.findIndex(m => m.modelName === modelName)
 		if (modelIdx === -1) return
 		const newIsHidden = !models[modelIdx].isHidden
-		const newModels: CymulateCodeEditorStatefulModelInfo[] = [
+		const newModels: VoidStatefulModelInfo[] = [
 			...models.slice(0, modelIdx),
 			{ ...models[modelIdx], isHidden: newIsHidden },
 			...models.slice(modelIdx + 1, Infinity)
@@ -534,4 +534,4 @@ class CymulateCodeEditorSettingsService extends Disposable implements ICymulateC
 }
 
 
-registerSingleton(ICymulateCodeEditorSettingsService, CymulateCodeEditorSettingsService, InstantiationType.Eager);
+registerSingleton(IVoidSettingsService, VoidSettingsService, InstantiationType.Eager);

@@ -4,6 +4,6 @@
  *--------------------------------------------------------------------------------------*/
 
 import { mountFnGenerator } from '../util/mountFnGenerator.js'
-import { CymulateCodeEditorTooltip } from './CymulateCodeEditorTooltip.js'
+import { VoidTooltip } from './VoidTooltip.js'
 
-export const mountCymulateCodeEditorTooltip = mountFnGenerator(CymulateCodeEditorTooltip)
+export const mountVoidTooltip = mountFnGenerator(VoidTooltip)

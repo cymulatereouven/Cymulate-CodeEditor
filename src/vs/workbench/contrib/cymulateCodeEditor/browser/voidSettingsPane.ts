@@ -23,33 +23,33 @@ import { URI } from '../../../../base/common/uri.js';
 import { ContextKeyExpr } from '../../../../platform/contextkey/common/contextkey.js';
 
 
-import { mountCymulateCodeEditorSettings } from './react/out/cymulateCodeEditor-settings-tsx/index.js'
+import { mountVoidSettings } from './react/out/void-settings-tsx/index.js'
 import { Codicon } from '../../../../base/common/codicons.js';
 import { toDisposable } from '../../../../base/common/lifecycle.js';
 
 
 // refer to preferences.contribution.ts keybindings editor
 
-class CymulateCodeEditorSettingsInput extends EditorInput {
+class VoidSettingsInput extends EditorInput {
 
 	static readonly ID: string = 'workbench.input.void.settings';
 
 	static readonly RESOURCE = URI.from({ // I think this scheme is invalid, it just shuts up TS
-		scheme: 'cymulateCodeEditor',  // Custom scheme for our editor (try Schemas.https)
+		scheme: 'void',  // Custom scheme for our editor (try Schemas.https)
 		path: 'settings'
 	})
-	readonly resource = CymulateCodeEditorSettingsInput.RESOURCE;
+	readonly resource = VoidSettingsInput.RESOURCE;
 
 	constructor() {
 		super();
 	}
 
 	override get typeId(): string {
-		return CymulateCodeEditorSettingsInput.ID;
+		return VoidSettingsInput.ID;
 	}
 
 	override getName(): string {
-		return nls.localize('cymulateCodeEditorSettingsInputsName', 'CymulateCodeEditor\'s Settings');
+		return nls.localize('voidSettingsInputsName', 'Void\'s Settings');
 	}
 
 	override getIcon() {
@@ -59,7 +59,7 @@ class CymulateCodeEditorSettingsInput extends EditorInput {
 }
 
 
-class CymulateCodeEditorSettingsPane extends EditorPane {
+class VoidSettingsPane extends EditorPane {
 	static readonly ID = 'workbench.test.myCustomPane';
 
 	// private _scrollbar: DomScrollableElement | undefined;
@@ -71,7 +71,7 @@ class CymulateCodeEditorSettingsPane extends EditorPane {
 		@IStorageService storageService: IStorageService,
 		@IInstantiationService private readonly instantiationService: IInstantiationService
 	) {
-		super(CymulateCodeEditorSettingsPane.ID, group, telemetryService, themeService, storageService);
+		super(VoidSettingsPane.ID, group, telemetryService, themeService, storageService);
 	}
 
 	protected createEditor(parent: HTMLElement): void {
@@ -90,7 +90,7 @@ class CymulateCodeEditorSettingsPane extends EditorPane {
 
 		// Mount React into the scrollable content
 		this.instantiationService.invokeFunction(accessor => {
-			const disposeFn = mountCymulateCodeEditorSettings(settingsElt, accessor)?.dispose;
+			const disposeFn = mountVoidSettings(settingsElt, accessor)?.dispose;
 			this._register(toDisposable(() => disposeFn?.()))
 
 			// setTimeout(() => { // this is a complete hack and I don't really understand how scrollbar works here
@@ -112,18 +112,18 @@ class CymulateCodeEditorSettingsPane extends EditorPane {
 
 // register Settings pane
 Registry.as<IEditorPaneRegistry>(EditorExtensions.EditorPane).registerEditorPane(
-	EditorPaneDescriptor.create(CymulateCodeEditorSettingsPane, CymulateCodeEditorSettingsPane.ID, nls.localize('CymulateCodeEditorSettingsPane', "CymulateCodeEditor\'s Settings Pane")),
-	[new SyncDescriptor(CymulateCodeEditorSettingsInput)]
+	EditorPaneDescriptor.create(VoidSettingsPane, VoidSettingsPane.ID, nls.localize('VoidSettingsPane', "Void\'s Settings Pane")),
+	[new SyncDescriptor(VoidSettingsInput)]
 );
 
 
 // register the gear on the top right
-export const VOID_TOGGLE_SETTINGS_ACTION_ID = 'workbench.action.toggleCymulateCodeEditorSettings'
+export const VOID_TOGGLE_SETTINGS_ACTION_ID = 'workbench.action.toggleVoidSettings'
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
 			id: VOID_TOGGLE_SETTINGS_ACTION_ID,
-			title: nls.localize2('cymulateCodeEditorSettings', "CymulateCodeEditor: Toggle Settings"),
+			title: nls.localize2('voidSettings', "Void: Toggle Settings"),
 			icon: Codicon.settingsGear,
 			menu: [
 				{
@@ -146,7 +146,7 @@ registerAction2(class extends Action2 {
 		const instantiationService = accessor.get(IInstantiationService);
 
 		// if is open, close it
-		const openEditors = editorService.findEditors(CymulateCodeEditorSettingsInput.RESOURCE); // should only have 0 or 1 elements...
+		const openEditors = editorService.findEditors(VoidSettingsInput.RESOURCE); // should only have 0 or 1 elements...
 		if (openEditors.length !== 0) {
 			const openEditor = openEditors[0].editor
 			const isCurrentlyOpen = editorService.activeEditor?.resource?.fsPath === openEditor.resource?.fsPath
@@ -159,7 +159,7 @@ registerAction2(class extends Action2 {
 
 
 		// else open it
-		const input = instantiationService.createInstance(CymulateCodeEditorSettingsInput);
+		const input = instantiationService.createInstance(VoidSettingsInput);
 
 		await editorGroupService.activeGroup.openEditor(input);
 	}
@@ -167,12 +167,12 @@ registerAction2(class extends Action2 {
 
 
 
-export const VOID_OPEN_SETTINGS_ACTION_ID = 'workbench.action.openCymulateCodeEditorSettings'
+export const VOID_OPEN_SETTINGS_ACTION_ID = 'workbench.action.openVoidSettings'
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
 			id: VOID_OPEN_SETTINGS_ACTION_ID,
-			title: nls.localize2('cymulateCodeEditorSettingsAction2', "CymulateCodeEditor: Open Settings"),
+			title: nls.localize2('voidSettingsAction2', "Void: Open Settings"),
 			f1: true,
 			icon: Codicon.settingsGear,
 		});
@@ -182,13 +182,13 @@ registerAction2(class extends Action2 {
 		const instantiationService = accessor.get(IInstantiationService);
 
 		// close all instances if found
-		const openEditors = editorService.findEditors(CymulateCodeEditorSettingsInput.RESOURCE);
+		const openEditors = editorService.findEditors(VoidSettingsInput.RESOURCE);
 		if (openEditors.length > 0) {
 			await editorService.closeEditors(openEditors);
 		}
 
 		// then, open one single editor
-		const input = instantiationService.createInstance(CymulateCodeEditorSettingsInput);
+		const input = instantiationService.createInstance(VoidSettingsInput);
 		await editorService.openEditor(input);
 	}
 })
@@ -202,7 +202,7 @@ MenuRegistry.appendMenuItem(MenuId.GlobalActivity, {
 	group: '0_command',
 	command: {
 		id: VOID_TOGGLE_SETTINGS_ACTION_ID,
-		title: nls.localize('cymulateCodeEditorSettingsActionGear', "CymulateCodeEditor\'s Settings")
+		title: nls.localize('voidSettingsActionGear', "Void\'s Settings")
 	},
 	order: 1
 });

@@ -7,7 +7,7 @@ import { Disposable, toDisposable } from '../../../../base/common/lifecycle.js';
 import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
 import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
 import { ServicesAccessor } from '../../../../editor/browser/editorExtensions.js';
-import { mountCymulateCodeEditorTooltip } from './react/out/cymulateCodeEditor-tooltip/index.js';
+import { mountVoidTooltip } from './react/out/void-tooltip/index.js';
 import { h, getActiveWindow } from '../../../../base/browser/dom.js';
 
 // Tooltip contribution that mounts the component at startup
@@ -30,12 +30,12 @@ export class TooltipContribution extends Disposable implements IWorkbenchContrib
 
 		if (workbench) {
 			// Create a container element for the tooltip using h function
-			const tooltipContainer = h('div.cymulateCodeEditor-tooltip-container').root;
+			const tooltipContainer = h('div.void-tooltip-container').root;
 			workbench.appendChild(tooltipContainer);
 
 			// Mount the React component
 			this.instantiationService.invokeFunction((accessor: ServicesAccessor) => {
-				const result = mountCymulateCodeEditorTooltip(tooltipContainer, accessor);
+				const result = mountVoidTooltip(tooltipContainer, accessor);
 				if (result && typeof result.dispose === 'function') {
 					this._register(toDisposable(result.dispose));
 				}

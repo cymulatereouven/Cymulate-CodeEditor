@@ -11,24 +11,24 @@ import { VOID_CTRL_K_ACTION_ID, VOID_CTRL_L_ACTION_ID } from '../../../actionIDs
 import { Circle, MoreVertical } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { CymulateCodeEditorSelectionHelperProps } from '../../../voidSelectionHelperWidget.js';
+import { VoidSelectionHelperProps } from '../../../../../../contrib/void/browser/voidSelectionHelperWidget.js';
 import { VOID_OPEN_SETTINGS_ACTION_ID } from '../../../voidSettingsPane.js';
 
 
-export const CymulateCodeEditorSelectionHelperMain = (props: CymulateCodeEditorSelectionHelperProps) => {
+export const VoidSelectionHelperMain = (props: VoidSelectionHelperProps) => {
 
 	const isDark = useIsDark()
 
 	return <div
-		className={`@@cymulateCodeEditor-scope ${isDark ? 'dark' : ''}`}
+		className={`@@void-scope ${isDark ? 'dark' : ''}`}
 	>
-		<CymulateCodeEditorSelectionHelper {...props} />
+		<VoidSelectionHelper {...props} />
 	</div>
 }
 
 
 
-const CymulateCodeEditorSelectionHelper = ({ rerenderKey }: CymulateCodeEditorSelectionHelperProps) => {
+const VoidSelectionHelper = ({ rerenderKey }: VoidSelectionHelperProps) => {
 
 
 	const accessor = useAccessor()
@@ -38,7 +38,7 @@ const CymulateCodeEditorSelectionHelper = ({ rerenderKey }: CymulateCodeEditorSe
 	const ctrlLKeybind = keybindingService.lookupKeybinding(VOID_CTRL_L_ACTION_ID)
 	const ctrlKKeybind = keybindingService.lookupKeybinding(VOID_CTRL_K_ACTION_ID)
 
-	const dividerHTML = <div className='w-[0.5px] bg-cymulateCodeEditor-border-3'></div>
+	const dividerHTML = <div className='w-[0.5px] bg-void-border-3'></div>
 
 	const [reactRerenderCount, setReactRerenderKey] = useState(rerenderKey)
 	const [clickState, setClickState] = useState<'init' | 'clickedOption' | 'clickedMore'>('init')
@@ -159,7 +159,7 @@ const CymulateCodeEditorSelectionHelper = ({ rerenderKey }: CymulateCodeEditorSe
 		pointer-events-auto select-none
 		z-[1000]
 		rounded-sm shadow-md flex flex-nowrap text-nowrap
-		border border-cymulateCodeEditor-border-3 bg-cymulateCodeEditor-bg-2
+		border border-void-border-3 bg-void-bg-2
 		transition-all duration-200
 	'>
 		{clickState === 'init' ? defaultHTML

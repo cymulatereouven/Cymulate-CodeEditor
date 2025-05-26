@@ -6,26 +6,26 @@ import { registerSingleton, InstantiationType } from '../../../../platform/insta
 import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
 import { ITextFileService } from '../../../services/textfile/common/textfiles.js';
 
-type CymulateCodeEditorModelType = {
+type VoidModelType = {
 	model: ITextModel | null;
 	editorModel: IResolvedTextEditorModel | null;
 };
 
-export interface ICymulateCodeEditorModelService {
+export interface IVoidModelService {
 	readonly _serviceBrand: undefined;
 	initializeModel(uri: URI): Promise<void>;
-	getModel(uri: URI): CymulateCodeEditorModelType;
-	getModelFromFsPath(fsPath: string): CymulateCodeEditorModelType;
-	getModelSafe(uri: URI): Promise<CymulateCodeEditorModelType>;
+	getModel(uri: URI): VoidModelType;
+	getModelFromFsPath(fsPath: string): VoidModelType;
+	getModelSafe(uri: URI): Promise<VoidModelType>;
 	saveModel(uri: URI): Promise<void>;
 
 }
 
-export const ICymulateCodeEditorModelService = createDecorator<ICymulateCodeEditorModelService>('cymulateCodeEditorCymulateCodeEditorModelService');
+export const IVoidModelService = createDecorator<IVoidModelService>('voidVoidModelService');
 
-class CymulateCodeEditorModelService extends Disposable implements ICymulateCodeEditorModelService {
+class VoidModelService extends Disposable implements IVoidModelService {
 	_serviceBrand: undefined;
-	static readonly ID = 'cymulateCodeEditorCymulateCodeEditorModelService';
+	static readonly ID = 'voidVoidModelService';
 	private readonly _modelRefOfURI: Record<string, IReference<IResolvedTextEditorModel>> = {};
 
 	constructor(
@@ -53,7 +53,7 @@ class CymulateCodeEditorModelService extends Disposable implements ICymulateCode
 		}
 	};
 
-	getModelFromFsPath = (fsPath: string): CymulateCodeEditorModelType => {
+	getModelFromFsPath = (fsPath: string): VoidModelType => {
 		const editorModelRef = this._modelRefOfURI[fsPath];
 		if (!editorModelRef) {
 			return { model: null, editorModel: null };
@@ -73,7 +73,7 @@ class CymulateCodeEditorModelService extends Disposable implements ICymulateCode
 	}
 
 
-	getModelSafe = async (uri: URI): Promise<CymulateCodeEditorModelType> => {
+	getModelSafe = async (uri: URI): Promise<VoidModelType> => {
 		if (!(uri.fsPath in this._modelRefOfURI)) await this.initializeModel(uri);
 		return this.getModel(uri);
 
@@ -87,4 +87,4 @@ class CymulateCodeEditorModelService extends Disposable implements ICymulateCode
 	}
 }
 
-registerSingleton(ICymulateCodeEditorModelService, CymulateCodeEditorModelService, InstantiationType.Eager);
+registerSingleton(IVoidModelService, VoidModelService, InstantiationType.Eager);

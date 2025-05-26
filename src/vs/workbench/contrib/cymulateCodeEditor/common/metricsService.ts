@@ -30,7 +30,7 @@ export class MetricsService implements IMetricsService {
 		@IMainProcessService mainProcessService: IMainProcessService // (only usable on client side)
 	) {
 		// creates an IPC proxy to use metricsMainService.ts
-		this.metricsService = ProxyChannel.toService<IMetricsService>(mainProcessService.getChannel('cymulateCodeEditor-channel-metrics'));
+		this.metricsService = ProxyChannel.toService<IMetricsService>(mainProcessService.getChannel('void-channel-metrics'));
 	}
 
 	// call capture on the channel
@@ -51,9 +51,9 @@ registerSingleton(IMetricsService, MetricsService, InstantiationType.Eager);
 registerAction2(class extends Action2 {
 	constructor() {
 		super({
-			id: 'cymulateCodeEditorDebugInfo',
+			id: 'voidDebugInfo',
 			f1: true,
-			title: localize2('cymulateCodeEditorMetricsDebug', 'CymulateCodeEditor: Log Debug Info'),
+			title: localize2('voidMetricsDebug', 'Void: Log Debug Info'),
 		});
 	}
 	async run(accessor: ServicesAccessor): Promise<void> {
@@ -62,6 +62,6 @@ registerAction2(class extends Action2 {
 
 		const debugProperties = await metricsService.getDebuggingProperties()
 		console.log('Metrics:', debugProperties)
-		notifService.info(`CymulateCodeEditor Debug info:\n${JSON.stringify(debugProperties, null, 2)}`)
+		notifService.info(`Void Debug info:\n${JSON.stringify(debugProperties, null, 2)}`)
 	}
 })

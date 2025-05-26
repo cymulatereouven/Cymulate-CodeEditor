@@ -9,11 +9,11 @@ import { ChatMessage } from '../common/chatThreadServiceTypes.js';
 import { getIsReasoningEnabledState, getReservedOutputTokenSpace, getModelCapabilities } from '../common/modelCapabilities.js';
 import { reParsedToolXMLString, chat_systemMessage, ToolName } from '../common/prompt/prompts.js';
 import { AnthropicLLMChatMessage, AnthropicReasoning, GeminiLLMChatMessage, LLMChatMessage, LLMFIMMessage, OpenAILLMChatMessage, RawToolParamsObj } from '../common/sendLLMMessageTypes.js';
-import { ICymulateCodeEditorSettingsService } from '../common/voidSettingsService.js';
+import { IVoidSettingsService } from '../common/voidSettingsService.js';
 import { ChatMode, FeatureName, ModelSelection, ProviderName } from '../common/voidSettingsTypes.js';
 import { IDirectoryStrService } from '../common/directoryStrService.js';
 import { ITerminalToolService } from './terminalToolService.js';
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
+import { IVoidModelService } from '../common/voidModelService.js';
 import { URI } from '../../../../base/common/uri.js';
 import { EndOfLinePreference } from '../../../../editor/common/model.js';
 
@@ -536,14 +536,14 @@ class ConvertToLLMMessageService extends Disposable implements IConvertToLLMMess
 		@IEditorService private readonly editorService: IEditorService,
 		@IDirectoryStrService private readonly directoryStrService: IDirectoryStrService,
 		@ITerminalToolService private readonly terminalToolService: ITerminalToolService,
-		@ICymulateCodeEditorSettingsService private readonly voidSettingsService: ICymulateCodeEditorSettingsService,
-		@ICymulateCodeEditorModelService private readonly voidModelService: ICymulateCodeEditorModelService,
+		@IVoidSettingsService private readonly voidSettingsService: IVoidSettingsService,
+		@IVoidModelService private readonly voidModelService: IVoidModelService,
 	) {
 		super()
 	}
 
 	// Read .voidrules files from workspace folders
-	private _getCymulateCodeEditorRulesFileContents(): string {
+	private _getVoidRulesFileContents(): string {
 		try {
 			const workspaceFolders = this.workspaceContextService.getWorkspace().folders;
 			let voidRules = '';
@@ -563,7 +563,7 @@ class ConvertToLLMMessageService extends Disposable implements IConvertToLLMMess
 	// Get combined AI instructions from settings and .voidrules files
 	private _getCombinedAIInstructions(): string {
 		const globalAIInstructions = this.voidSettingsService.state.globalSettings.aiInstructions;
-		const voidRulesFileContent = this._getCymulateCodeEditorRulesFileContents();
+		const voidRulesFileContent = this._getVoidRulesFileContents();
 
 		const ans: string[] = []
 		if (globalAIInstructions) ans.push(globalAIInstructions)

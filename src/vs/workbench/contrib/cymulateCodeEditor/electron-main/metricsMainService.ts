@@ -37,7 +37,7 @@ export class MetricsMainService extends Disposable implements IMetricsService {
 	private _initProperties: object = {}
 
 
-	// helper - looks like this is stored in a .vscdb file in ~/Library/Application Support/CymulateCodeEditor
+	// helper - looks like this is stored in a .vscdb file in ~/Library/Application Support/Void
 	private _memoStorage(key: string, target: StorageTarget, setValIfNotExist?: string) {
 		const currVal = this._appStorage.get(key, StorageScope.APPLICATION)
 		if (currVal !== undefined) return currVal
@@ -51,18 +51,18 @@ export class MetricsMainService extends Disposable implements IMetricsService {
 	// returns 'NULL' or the old key
 	private get oldId() {
 		// check new storage key first
-		const newKey = 'cymulateCodeEditor.app.oldMachineId'
+		const newKey = 'void.app.oldMachineId'
 		const newOldId = this._appStorage.get(newKey, StorageScope.APPLICATION)
 		if (newOldId) return newOldId
 
 		// put old key into new key if didn't already
-		const oldValue = this._appStorage.get('cymulateCodeEditor.machineId', StorageScope.APPLICATION) ?? 'NULL' // the old way of getting the key
+		const oldValue = this._appStorage.get('void.machineId', StorageScope.APPLICATION) ?? 'NULL' // the old way of getting the key
 		this._appStorage.store(newKey, oldValue, StorageScope.APPLICATION, StorageTarget.MACHINE)
 		return oldValue
 
 		// in a few weeks we can replace above with this
 		// private get oldId() {
-		// 	return this._memoStorage('cymulateCodeEditor.app.oldMachineId', StorageTarget.MACHINE, 'NULL')
+		// 	return this._memoStorage('void.app.oldMachineId', StorageTarget.MACHINE, 'NULL')
 		// }
 	}
 
@@ -71,12 +71,12 @@ export class MetricsMainService extends Disposable implements IMetricsService {
 	private get distinctId() {
 		const oldId = this.oldId
 		const setValIfNotExist = oldId === 'NULL' ? undefined : oldId
-		return this._memoStorage('cymulateCodeEditor.app.machineId', StorageTarget.MACHINE, setValIfNotExist)
+		return this._memoStorage('void.app.machineId', StorageTarget.MACHINE, setValIfNotExist)
 	}
 
 	// just to see if there are ever multiple machineIDs per userID (instead of this, we should just track by the user's email)
 	private get userId() {
-		return this._memoStorage('cymulateCodeEditor.app.userMachineId', StorageTarget.USER)
+		return this._memoStorage('void.app.userMachineId', StorageTarget.USER)
 	}
 
 	constructor(
@@ -121,7 +121,7 @@ export class MetricsMainService extends Disposable implements IMetricsService {
 		}
 		this.client.identify(identifyMessage)
 
-		console.log('CymulateCodeEditor posthog metrics info:', JSON.stringify(identifyMessage, null, 2))
+		console.log('Void posthog metrics info:', JSON.stringify(identifyMessage, null, 2))
 	}
 
 

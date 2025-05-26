@@ -12,22 +12,22 @@ module.exports = {
 			typography: theme => ({
 				DEFAULT: {
 					css: {
-						'--tw-prose-body': 'var(--cymulateCodeEditor-fg-1)',
-						'--tw-prose-headings': 'var(--cymulateCodeEditor-fg-1)',
-						'--tw-prose-lead': 'var(--cymulateCodeEditor-fg-2)',
-						'--tw-prose-links': 'var(--cymulateCodeEditor-link-color)',
-						'--tw-prose-bold': 'var(--cymulateCodeEditor-fg-1)',
-						'--tw-prose-counters': 'var(--cymulateCodeEditor-fg-3)',
-						'--tw-prose-bullets': 'var(--cymulateCodeEditor-fg-3)',
-						'--tw-prose-hr': 'var(--cymulateCodeEditor-border-4)',
-						'--tw-prose-quotes': 'var(--cymulateCodeEditor-fg-1)',
-						'--tw-prose-quote-borders': 'var(--cymulateCodeEditor-border-2)',
-						'--tw-prose-captions': 'var(--cymulateCodeEditor-fg-3)',
-						'--tw-prose-code': 'var(--cymulateCodeEditor-fg-0)',
-						'--tw-prose-pre-code': 'var(--cymulateCodeEditor-fg-0)',
-						'--tw-prose-pre-bg': 'var(--cymulateCodeEditor-bg-1)',
-						'--tw-prose-th-borders': 'var(--cymulateCodeEditor-border-4)',
-						'--tw-prose-td-borders': 'var(--cymulateCodeEditor-border-4)',
+						'--tw-prose-body': 'var(--void-fg-1)',
+						'--tw-prose-headings': 'var(--void-fg-1)',
+						'--tw-prose-lead': 'var(--void-fg-2)',
+						'--tw-prose-links': 'var(--void-link-color)',
+						'--tw-prose-bold': 'var(--void-fg-1)',
+						'--tw-prose-counters': 'var(--void-fg-3)',
+						'--tw-prose-bullets': 'var(--void-fg-3)',
+						'--tw-prose-hr': 'var(--void-border-4)',
+						'--tw-prose-quotes': 'var(--void-fg-1)',
+						'--tw-prose-quote-borders': 'var(--void-border-2)',
+						'--tw-prose-captions': 'var(--void-fg-3)',
+						'--tw-prose-code': 'var(--void-fg-0)',
+						'--tw-prose-pre-code': 'var(--void-fg-0)',
+						'--tw-prose-pre-bg': 'var(--void-bg-1)',
+						'--tw-prose-th-borders': 'var(--void-border-4)',
+						'--tw-prose-td-borders': 'var(--void-border-4)',
 					},
 				},
 			}),
@@ -49,30 +49,30 @@ module.exports = {
 			// common colors to use, ordered light to dark
 
 			colors: {
-				'cymulateCodeEditor-bg-1': 'var(--cymulateCodeEditor-bg-1)',
-				'cymulateCodeEditor-bg-1-alt': 'var(--cymulateCodeEditor-bg-1-alt)',
-				'cymulateCodeEditor-bg-2': 'var(--cymulateCodeEditor-bg-2)',
-				'cymulateCodeEditor-bg-2-alt': 'var(--cymulateCodeEditor-bg-2-alt)',
-				'cymulateCodeEditor-bg-2-hover': 'var(--cymulateCodeEditor-bg-2-hover)',
-				'cymulateCodeEditor-bg-3': 'var(--cymulateCodeEditor-bg-3)',
+				'void-bg-1': 'var(--void-bg-1)',
+				'void-bg-1-alt': 'var(--void-bg-1-alt)',
+				'void-bg-2': 'var(--void-bg-2)',
+				'void-bg-2-alt': 'var(--void-bg-2-alt)',
+				'void-bg-2-hover': 'var(--void-bg-2-hover)',
+				'void-bg-3': 'var(--void-bg-3)',
 
 
-				'cymulateCodeEditor-fg-0': 'var(--cymulateCodeEditor-fg-0)',
-				'cymulateCodeEditor-fg-1': 'var(--cymulateCodeEditor-fg-1)',
-				'cymulateCodeEditor-fg-2': 'var(--cymulateCodeEditor-fg-2)',
-				'cymulateCodeEditor-fg-3': 'var(--cymulateCodeEditor-fg-3)',
-				// 'cymulateCodeEditor-fg-4': 'var(--vscode-tab-inactiveForeground)',
-				'cymulateCodeEditor-fg-4': 'var(--cymulateCodeEditor-fg-4)',
+				'void-fg-0': 'var(--void-fg-0)',
+				'void-fg-1': 'var(--void-fg-1)',
+				'void-fg-2': 'var(--void-fg-2)',
+				'void-fg-3': 'var(--void-fg-3)',
+				// 'void-fg-4': 'var(--vscode-tab-inactiveForeground)',
+				'void-fg-4': 'var(--void-fg-4)',
 
-				'cymulateCodeEditor-warning': 'var(--cymulateCodeEditor-warning)',
+				'void-warning': 'var(--void-warning)',
 
-				'cymulateCodeEditor-border-1': 'var(--cymulateCodeEditor-border-1)',
-				'cymulateCodeEditor-border-2': 'var(--cymulateCodeEditor-border-2)',
-				'cymulateCodeEditor-border-3': 'var(--cymulateCodeEditor-border-3)',
-				'cymulateCodeEditor-border-4': 'var(--cymulateCodeEditor-border-4)',
+				'void-border-1': 'var(--void-border-1)',
+				'void-border-2': 'var(--void-border-2)',
+				'void-border-3': 'var(--void-border-3)',
+				'void-border-4': 'var(--void-border-4)',
 
-				'cymulateCodeEditor-ring-color': 'var(--cymulateCodeEditor-ring-color)',
-				'cymulateCodeEditor-link-color': 'var(--cymulateCodeEditor-link-color)',
+				'void-ring-color': 'var(--void-ring-color)',
+				'void-link-color': 'var(--void-link-color)',
 
 				vscode: {
 					// see: https://code.visualstudio.com/api/extension-guides/webview#theming-webview-content
@@ -194,6 +194,6 @@ module.exports = {
 	plugins: [
 		require('@tailwindcss/typography')
 	],
-	prefix: 'cymulateCodeEditor-'
+	prefix: 'void-'
 }
 

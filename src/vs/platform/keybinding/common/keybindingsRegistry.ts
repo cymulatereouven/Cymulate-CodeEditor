@@ -65,7 +65,7 @@ export const enum KeybindingWeight {
 	WorkbenchContrib = 200,
 	BuiltinExtension = 300,
 	ExternalExtension = 400,
-	CymulateCodeEditorExtension = 605, // CymulateCodeEditor -  must trump any external extension
+	VoidExtension = 605, // Void -  must trump any external extension
 }
 
 export interface ICommandAndKeybindingRule extends IKeybindingRule {

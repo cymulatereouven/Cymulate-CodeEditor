@@ -24,7 +24,7 @@ import { Widget } from '../../../../base/browser/ui/widget.js';
 import { URI } from '../../../../base/common/uri.js';
 import { IConsistentEditorItemService, IConsistentItemService } from './helperServices/consistentItemService.js';
 import { voidPrefixAndSuffix, ctrlKStream_userMessage, ctrlKStream_systemMessage, defaultQuickEditFimTags, rewriteCode_systemMessage, rewriteCode_userMessage, searchReplaceGivenDescription_systemMessage, searchReplaceGivenDescription_userMessage, tripleTick, } from '../common/prompt/prompts.js';
-import { ICymulateCodeEditorCommandBarService } from './voidCommandBarService.js';
+import { IVoidCommandBarService } from './voidCommandBarService.js';
 import { IKeybindingService } from '../../../../platform/keybinding/common/keybinding.js';
 import { VOID_ACCEPT_DIFF_ACTION_ID, VOID_REJECT_DIFF_ACTION_ID } from './actionIDs.js';
 
@@ -39,12 +39,12 @@ import { ILLMMessageService } from '../common/sendLLMMessageService.js';
 import { LLMChatMessage } from '../common/sendLLMMessageTypes.js';
 import { IMetricsService } from '../common/metricsService.js';
 import { IEditCodeService, AddCtrlKOpts, StartApplyingOpts, CallBeforeStartApplyingOpts, } from './editCodeServiceInterface.js';
-import { ICymulateCodeEditorSettingsService } from '../common/voidSettingsService.js';
+import { IVoidSettingsService } from '../common/voidSettingsService.js';
 import { FeatureName } from '../common/voidSettingsTypes.js';
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
+import { IVoidModelService } from '../common/voidModelService.js';
 import { deepClone } from '../../../../base/common/objects.js';
 import { acceptBg, acceptBorder, buttonFontSize, buttonTextColor, rejectBg, rejectBorder } from '../common/helpers/colors.js';
-import { DiffArea, Diff, CtrlKZone, CymulateCodeEditorFileSnapshot, DiffAreaSnapshotEntry, diffAreaSnapshotKeys, DiffZone, TrackingZone, ComputedDiff } from '../common/editCodeServiceTypes.js';
+import { DiffArea, Diff, CtrlKZone, VoidFileSnapshot, DiffAreaSnapshotEntry, diffAreaSnapshotKeys, DiffZone, TrackingZone, ComputedDiff } from '../common/editCodeServiceTypes.js';
 import { IConvertToLLMMessageService } from './convertToLLMMessageService.js';
 // import { isMacintosh } from '../../../../base/common/platform.js';
 // import { VOID_OPEN_SETTINGS_ACTION_ID } from './voidSettingsPane.js';
@@ -192,9 +192,9 @@ class EditCodeService extends Disposable implements IEditCodeService {
 		@IMetricsService private readonly _metricsService: IMetricsService,
 		@INotificationService private readonly _notificationService: INotificationService,
 		// @ICommandService private readonly _commandService: ICommandService,
-		@ICymulateCodeEditorSettingsService private readonly _settingsService: ICymulateCodeEditorSettingsService,
+		@IVoidSettingsService private readonly _settingsService: IVoidSettingsService,
 		// @IFileService private readonly _fileService: IFileService,
-		@ICymulateCodeEditorModelService private readonly _voidModelService: ICymulateCodeEditorModelService,
+		@IVoidModelService private readonly _voidModelService: IVoidModelService,
 		@IConvertToLLMMessageService private readonly _convertToLLMMessageService: IConvertToLLMMessageService,
 	) {
 		super();
@@ -279,18 +279,18 @@ class EditCodeService extends Disposable implements IEditCodeService {
 	// 	const details = errorDetails(e.fullError)
 	// 	this._notificationService.notify({
 	// 		severity: Severity.Warning,
-	// 		message: `CymulateCodeEditor Error: ${e.message}`,
+	// 		message: `Void Error: ${e.message}`,
 	// 		actions: {
 	// 			secondary: [{
-	// 				id: 'cymulateCodeEditor.onerror.opensettings',
+	// 				id: 'void.onerror.opensettings',
 	// 				enabled: true,
-	// 				label: `Open CymulateCodeEditor's settings`,
+	// 				label: `Open Void's settings`,
 	// 				tooltip: '',
 	// 				class: undefined,
 	// 				run: () => { this._commandService.executeCommand(VOID_OPEN_SETTINGS_ACTION_ID) }
 	// 			}]
 	// 		},
-	// 		source: details ? `(Hold ${isMacintosh ? 'Option' : 'Alt'} to hover) - ${details}\n\nIf this persists, feel free to [report](https://github.com/cymulatereouven/Cymulate-CodeEditor/issues/new) it.` : undefined
+	// 		source: details ? `(Hold ${isMacintosh ? 'Option' : 'Alt'} to hover) - ${details}\n\nIf this persists, feel free to [report](https://github.com/voideditor/void/issues/new) it.` : undefined
 	// 	})
 	// }
 
@@ -324,10 +324,10 @@ class EditCodeService extends Disposable implements IEditCodeService {
 				// add sweep styles to the diffZone
 				if (diffArea._streamState.isStreaming) {
 					// sweepLine ... sweepLine
-					const fn1 = this._addLineDecoration(model, diffArea._streamState.line, diffArea._streamState.line, 'cymulateCodeEditor-sweepIdxBG')
+					const fn1 = this._addLineDecoration(model, diffArea._streamState.line, diffArea._streamState.line, 'void-sweepIdxBG')
 					// sweepLine+1 ... endLine
 					const fn2 = diffArea._streamState.line + 1 <= diffArea.endLine ?
-						this._addLineDecoration(model, diffArea._streamState.line + 1, diffArea.endLine, 'cymulateCodeEditor-sweepBG')
+						this._addLineDecoration(model, diffArea._streamState.line + 1, diffArea.endLine, 'void-sweepBG')
 						: null
 					diffArea._removeStylesFns.add(() => { fn1?.(); fn2?.(); })
 
@@ -336,7 +336,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 			else if (diffArea.type === 'CtrlKZone' && diffArea._linkedStreamingDiffZone === null) {
 				// highlight zone's text
-				const fn = this._addLineDecoration(model, diffArea.startLine, diffArea.endLine, 'cymulateCodeEditor-highlightBG')
+				const fn = this._addLineDecoration(model, diffArea.startLine, diffArea.endLine, 'void-highlightBG')
 				diffArea._removeStylesFns.add(() => fn?.());
 			}
 		}
@@ -481,7 +481,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 		// green decoration and minimap decoration
 		if (type !== 'deletion') {
-			const fn = this._addLineDecoration(model, diff.startLine, diff.endLine, 'cymulateCodeEditor-greenBG', {
+			const fn = this._addLineDecoration(model, diff.startLine, diff.endLine, 'void-greenBG', {
 				minimap: { color: { id: 'minimapGutter.addedBackground' }, position: 2 },
 				overviewRuler: { color: { id: 'editorOverviewRuler.addedForeground' }, position: 7 }
 			})
@@ -496,7 +496,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 				fn: (editor) => {
 
 					const domNode = document.createElement('div');
-					domNode.className = 'cymulateCodeEditor-redBG'
+					domNode.className = 'void-redBG'
 
 					const renderOptions = RenderOptions.fromEditor(editor)
 
@@ -585,7 +585,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 							offsetLines = 1
 						}
 					}
-					else { throw new Error('CymulateCodeEditor 1') }
+					else { throw new Error('Void 1') }
 
 					const buttonsWidget = this._instantiationService.createInstance(AcceptRejectInlineWidget, {
 						editor,
@@ -663,7 +663,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 
 
-	private _getCurrentCymulateCodeEditorFileSnapshot = (uri: URI): CymulateCodeEditorFileSnapshot => {
+	private _getCurrentVoidFileSnapshot = (uri: URI): VoidFileSnapshot => {
 		const { model } = this._voidModelService.getModel(uri)
 		const snapshottedDiffAreaOfId: Record<string, DiffAreaSnapshotEntry> = {}
 
@@ -687,7 +687,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 	}
 
 
-	private _restoreCymulateCodeEditorFileSnapshot = async (uri: URI, snapshot: CymulateCodeEditorFileSnapshot) => {
+	private _restoreVoidFileSnapshot = async (uri: URI, snapshot: VoidFileSnapshot) => {
 		// for each diffarea in this uri, stop streaming if currently streaming
 		for (const diffareaid in this.diffAreaOfId) {
 			const diffArea = this.diffAreaOfId[diffareaid]
@@ -737,34 +737,34 @@ class EditCodeService extends Disposable implements IEditCodeService {
 	}
 
 	private _addToHistory(uri: URI, opts?: { onWillUndo?: () => void }) {
-		const beforeSnapshot: CymulateCodeEditorFileSnapshot = this._getCurrentCymulateCodeEditorFileSnapshot(uri)
-		let afterSnapshot: CymulateCodeEditorFileSnapshot | null = null
+		const beforeSnapshot: VoidFileSnapshot = this._getCurrentVoidFileSnapshot(uri)
+		let afterSnapshot: VoidFileSnapshot | null = null
 
 		const elt: IUndoRedoElement = {
 			type: UndoRedoElementType.Resource,
 			resource: uri,
-			label: 'CymulateCodeEditor Agent',
+			label: 'Void Agent',
 			code: 'undoredo.editCode',
-			undo: async () => { opts?.onWillUndo?.(); await this._restoreCymulateCodeEditorFileSnapshot(uri, beforeSnapshot) },
-			redo: async () => { if (afterSnapshot) await this._restoreCymulateCodeEditorFileSnapshot(uri, afterSnapshot) }
+			undo: async () => { opts?.onWillUndo?.(); await this._restoreVoidFileSnapshot(uri, beforeSnapshot) },
+			redo: async () => { if (afterSnapshot) await this._restoreVoidFileSnapshot(uri, afterSnapshot) }
 		}
 		this._undoRedoService.pushElement(elt)
 
 		const onFinishEdit = async () => {
-			afterSnapshot = this._getCurrentCymulateCodeEditorFileSnapshot(uri)
+			afterSnapshot = this._getCurrentVoidFileSnapshot(uri)
 			await this._voidModelService.saveModel(uri)
 		}
 		return { onFinishEdit }
 	}
 
 
-	public getCymulateCodeEditorFileSnapshot(uri: URI) {
-		return this._getCurrentCymulateCodeEditorFileSnapshot(uri)
+	public getVoidFileSnapshot(uri: URI) {
+		return this._getCurrentVoidFileSnapshot(uri)
 	}
 
 
-	public restoreCymulateCodeEditorFileSnapshot(uri: URI, snapshot: CymulateCodeEditorFileSnapshot): void {
-		this._restoreCymulateCodeEditorFileSnapshot(uri, snapshot)
+	public restoreVoidFileSnapshot(uri: URI, snapshot: VoidFileSnapshot): void {
+		this._restoreVoidFileSnapshot(uri, snapshot)
 	}
 
 
@@ -997,7 +997,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 			else if (lastDiff.type === 'deletion')
 				endLineInLlmTextSoFar = lastDiff.startLine
 			else
-				throw new Error(`CymulateCodeEditor: diff.type not recognized on: ${lastDiff}`)
+				throw new Error(`Void: diff.type not recognized on: ${lastDiff}`)
 		}
 
 		// at the start, add a newline between the stream and originalCode to make reasoning easier
@@ -1366,7 +1366,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 			startRange = [startLine_, endLine_]
 		}
 		else {
-			throw new Error(`CymulateCodeEditor: diff.type not recognized on: ${from}`)
+			throw new Error(`Void: diff.type not recognized on: ${from}`)
 		}
 
 		const { model } = this._voidModelService.getModel(uri)
@@ -1465,7 +1465,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 			else if (from === 'ClickApply') {
 				return extractCodeFromRegular({ text: fullText, recentlyAddedTextLen })
 			}
-			throw new Error('CymulateCodeEditor 1')
+			throw new Error('Void 1')
 		}
 
 		// refresh now in case onText takes a while to get 1st message
@@ -1948,7 +1948,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 						const blocks = extractSearchReplaceBlocks(fullText)
 						if (blocks.length === 0) {
-							this._notificationService.info(`CymulateCodeEditor: We ran Fast Apply, but the LLM didn't output any changes.`)
+							this._notificationService.info(`Void: We ran Fast Apply, but the LLM didn't output any changes.`)
 						}
 						this._writeURIText(uri, originalFileCode, 'wholeFileRange', { shouldRealignDiffAreas: true })
 
@@ -2094,7 +2094,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 
 
-	// called on cymulateCodeEditor.acceptDiff
+	// called on void.acceptDiff
 	public async acceptDiff({ diffid }: { diffid: number }) {
 
 		// TODO could use an ITextModelto do this instead, would be much simpler
@@ -2138,7 +2138,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 			].join('\n')
 		}
 		else {
-			throw new Error(`CymulateCodeEditor error: ${diff}.type not recognized`)
+			throw new Error(`Void error: ${diff}.type not recognized`)
 		}
 
 		// console.log('DIFF', diff)
@@ -2165,7 +2165,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 
 
 
-	// called on cymulateCodeEditor.rejectDiff
+	// called on void.rejectDiff
 	public async rejectDiff({ diffid }: { diffid: number }) {
 
 		const diff = this.diffOfId[diffid]
@@ -2230,7 +2230,7 @@ class EditCodeService extends Disposable implements IEditCodeService {
 			toRange = { startLineNumber: diff.startLine, startColumn: 1, endLineNumber: diff.endLine, endColumn: Number.MAX_SAFE_INTEGER } // 1-indexed
 		}
 		else {
-			throw new Error(`CymulateCodeEditor error: ${diff}.type not recognized`)
+			throw new Error(`Void error: ${diff}.type not recognized`)
 		}
 
 		// update the file
@@ -2285,7 +2285,7 @@ class AcceptRejectInlineWidget extends Widget implements IOverlayWidget {
 			startLine: number,
 			offsetLines: number
 		},
-		@ICymulateCodeEditorCommandBarService private readonly _voidCommandBarService: ICymulateCodeEditorCommandBarService,
+		@IVoidCommandBarService private readonly _voidCommandBarService: IVoidCommandBarService,
 		@IKeybindingService private readonly _keybindingService: IKeybindingService,
 		@IEditCodeService private readonly _editCodeService: IEditCodeService,
 	) {

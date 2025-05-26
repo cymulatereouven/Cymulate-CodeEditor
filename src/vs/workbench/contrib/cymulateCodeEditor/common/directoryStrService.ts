@@ -31,7 +31,7 @@ export interface IDirectoryStrService {
 	getAllURIsInDirectory(uri: URI, opts: { maxResults: number }): Promise<URI[]>
 
 }
-export const IDirectoryStrService = createDecorator<IDirectoryStrService>('cymulateCodeEditorDirectoryStrService');
+export const IDirectoryStrService = createDecorator<IDirectoryStrService>('voidDirectoryStrService');
 
 
 

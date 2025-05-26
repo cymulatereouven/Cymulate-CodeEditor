@@ -11,7 +11,7 @@ import { registerSingleton, InstantiationType } from '../../../../platform/insta
 import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
 import { TerminalLocation } from '../../../../platform/terminal/common/terminal.js';
 import { IWorkspaceContextService } from '../../../../platform/workspace/common/workspace.js';
-import { ITerminalService, ITerminalInstance, ICreateTerminalOptions } from '../../terminal/browser/terminal.js';
+import { ITerminalService, ITerminalInstance, ICreateTerminalOptions } from '../../../../workbench/contrib/terminal/browser/terminal.js';
 import { MAX_TERMINAL_BG_COMMAND_TIME, MAX_TERMINAL_CHARS, MAX_TERMINAL_INACTIVE_TIME } from '../common/prompt/prompts.js';
 import { TerminalResolveReason } from '../common/toolsServiceTypes.js';
 import { timeout } from '../../../../base/common/async.js';
@@ -53,13 +53,13 @@ export const ITerminalToolService = createDecorator<ITerminalToolService>('Termi
 
 
 export const persistentTerminalNameOfId = (id: string) => {
-	if (id === '1') return 'CymulateCodeEditor Agent'
-	return `CymulateCodeEditor Agent (${id})`
+	if (id === '1') return 'Void Agent'
+	return `Void Agent (${id})`
 }
 export const idOfPersistentTerminalName = (name: string) => {
-	if (name === 'CymulateCodeEditor Agent') return '1'
+	if (name === 'Void Agent') return '1'
 
-	const match = name.match(/CymulateCodeEditor Agent \((\d+)\)/)
+	const match = name.match(/Void Agent \((\d+)\)/)
 	if (!match) return null
 	if (Number.isInteger(match[1]) && Number(match[1]) >= 1) return match[1]
 	return null
@@ -297,7 +297,7 @@ export class TerminalToolService extends Disposable implements ITerminalToolServ
 
 
 			const cmdCap = await this._waitForCommandDetectionCapability(terminal)
-			if (!cmdCap) throw new Error(`There was an error using the terminal: CommandDetection capability did not mount yet. Please try again in a few seconds or report this to the CymulateCodeEditor team.`)
+			if (!cmdCap) throw new Error(`There was an error using the terminal: CommandDetection capability did not mount yet. Please try again in a few seconds or report this to the Void team.`)
 
 			// Prefer the structured command-detection capability when available
 

@@ -7,14 +7,14 @@ import { Disposable } from '../../../../base/common/lifecycle.js';
 import { URI } from '../../../../base/common/uri.js';
 import { IWorkspaceContextService } from '../../../../platform/workspace/common/workspace.js';
 import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
-import { ICymulateCodeEditorModelService } from '../common/voidModelService.js';
+import { IVoidModelService } from '../common/voidModelService.js';
 
 class ConvertContribWorkbenchContribution extends Disposable implements IWorkbenchContribution {
 	static readonly ID = 'workbench.contrib.void.convertcontrib'
 	_serviceBrand: undefined;
 
 	constructor(
-		@ICymulateCodeEditorModelService private readonly voidModelService: ICymulateCodeEditorModelService,
+		@IVoidModelService private readonly voidModelService: IVoidModelService,
 		@IWorkspaceContextService private readonly workspaceContext: IWorkspaceContextService,
 	) {
 		super()

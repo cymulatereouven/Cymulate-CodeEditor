@@ -32,9 +32,9 @@ const configOfBG = (color: Color) => {
 	return { dark: color, light: color, hcDark: color, hcLight: color, }
 }
 
-// gets converted to --vscode-cymulateCodeEditor-greenBG, see void.css, asCssVariable
-registerColor('cymulateCodeEditor.greenBG', configOfBG(acceptBG), '', true);
-registerColor('cymulateCodeEditor.redBG', configOfBG(rejectBG), '', true);
-registerColor('cymulateCodeEditor.sweepBG', configOfBG(sweepBG), '', true);
-registerColor('cymulateCodeEditor.highlightBG', configOfBG(highlightBG), '', true);
-registerColor('cymulateCodeEditor.sweepIdxBG', configOfBG(sweepIdxBG), '', true);
+// gets converted to --vscode-void-greenBG, see void.css, asCssVariable
+registerColor('void.greenBG', configOfBG(acceptBG), '', true);
+registerColor('void.redBG', configOfBG(rejectBG), '', true);
+registerColor('void.sweepBG', configOfBG(sweepBG), '', true);
+registerColor('void.highlightBG', configOfBG(highlightBG), '', true);
+registerColor('void.sweepIdxBG', configOfBG(sweepIdxBG), '', true);

@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------*/
 
 import { mountFnGenerator } from '../util/mountFnGenerator.js'
-import { CymulateCodeEditorCommandBarMain } from './CymulateCodeEditorCommandBar.js'
-import { CymulateCodeEditorSelectionHelperMain } from './CymulateCodeEditorSelectionHelper.js'
+import { VoidCommandBarMain } from './VoidCommandBar.js'
+import { VoidSelectionHelperMain } from './VoidSelectionHelper.js'
 
-export const mountCymulateCodeEditorCommandBar = mountFnGenerator(CymulateCodeEditorCommandBarMain)
+export const mountVoidCommandBar = mountFnGenerator(VoidCommandBarMain)
 
-export const mountCymulateCodeEditorSelectionHelper = mountFnGenerator(CymulateCodeEditorSelectionHelperMain)
+export const mountVoidSelectionHelper = mountFnGenerator(VoidSelectionHelperMain)
 

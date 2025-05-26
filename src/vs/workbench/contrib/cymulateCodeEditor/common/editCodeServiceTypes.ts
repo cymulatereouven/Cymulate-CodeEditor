@@ -112,7 +112,7 @@ export const diffAreaSnapshotKeys = [
 
 export type DiffAreaSnapshotEntry<DiffAreaType extends DiffArea = DiffArea> = Pick<DiffAreaType, typeof diffAreaSnapshotKeys[number]>
 
-export type CymulateCodeEditorFileSnapshot = {
+export type VoidFileSnapshot = {
 	snapshottedDiffAreaOfId: Record<string, DiffAreaSnapshotEntry>;
 	entireFileCode: string;
 }

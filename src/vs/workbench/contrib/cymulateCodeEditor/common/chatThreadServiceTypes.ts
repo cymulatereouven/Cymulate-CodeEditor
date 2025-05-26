@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------*/
 
 import { URI } from '../../../../base/common/uri.js';
-import { CymulateCodeEditorFileSnapshot } from './editCodeServiceTypes.js';
+import { VoidFileSnapshot } from './editCodeServiceTypes.js';
 import { ToolName } from './prompt/prompts.js';
 import { AnthropicReasoning, RawToolParamsObj } from './sendLLMMessageTypes.js';
 import { ToolCallParams, ToolResultType } from './toolsServiceTypes.js';
@@ -37,10 +37,10 @@ export type DecorativeCanceledTool = {
 export type CheckpointEntry = {
 	role: 'checkpoint';
 	type: 'user_edit' | 'tool_edit';
-	voidFileSnapshotOfURI: { [fsPath: string]: CymulateCodeEditorFileSnapshot | undefined };
+	voidFileSnapshotOfURI: { [fsPath: string]: VoidFileSnapshot | undefined };
 
 	userModifications: {
-		voidFileSnapshotOfURI: { [fsPath: string]: CymulateCodeEditorFileSnapshot | undefined };
+		voidFileSnapshotOfURI: { [fsPath: string]: VoidFileSnapshot | undefined };
 	};
 }
 

@@ -894,14 +894,14 @@ export class FilesRenderer implements ICompressibleTreeRenderer<ExplorerItem, Fu
 		return FilesRenderer.ID;
 	}
 
-	// CymulateCodeEditor added this
+	// Void added this
 	// // Create void buttons container
 	// const voidButtonsContainer = DOM.append(container, DOM.$('div'));
 	// voidButtonsContainer.style.position = 'absolute'
 	// voidButtonsContainer.style.top = '0'
 	// voidButtonsContainer.style.right = '0'
 	// // const voidButtons = DOM.append(voidButtonsContainer, DOM.$('span'));
-	// // voidButtons.textContent = 'cymulateCodeEditorbuttons'
+	// // voidButtons.textContent = 'voidbuttons'
 	// // voidButtons.addEventListener('click', () => {
 	// // 	console.log('ON CLICK', templateData.currentContext?.children)
 	// // })
@@ -931,7 +931,7 @@ export class FilesRenderer implements ICompressibleTreeRenderer<ExplorerItem, Fu
 		return templateData;
 	}
 
-	// CymulateCodeEditor cares about this function, this is where elements in the tree are rendered
+	// Void cares about this function, this is where elements in the tree are rendered
 	renderElement(node: ITreeNode<ExplorerItem, FuzzyScore>, index: number, templateData: IFileTemplateData): void {
 		const stat = node.element;
 		templateData.currentContext = stat;

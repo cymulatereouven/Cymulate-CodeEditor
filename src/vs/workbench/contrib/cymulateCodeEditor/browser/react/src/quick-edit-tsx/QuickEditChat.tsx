@@ -5,12 +5,12 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSettingsState, useAccessor, useCtrlKZoneStreamingState } from '../util/services.js';
-import { TextAreaFns, CymulateCodeEditorInputBox2 } from '../util/inputs.js';
+import { TextAreaFns, VoidInputBox2 } from '../util/inputs.js';
 import { QuickEditPropsType } from '../../../quickEditActions.js';
-import { ButtonStop, ButtonSubmit, IconX, CymulateCodeEditorChatArea } from '../sidebar-tsx/SidebarChat.js';
+import { ButtonStop, ButtonSubmit, IconX, VoidChatArea } from '../sidebar-tsx/SidebarChat.js';
 import { VOID_CTRL_K_ACTION_ID } from '../../../actionIDs.js';
 import { useRefState } from '../util/helpers.js';
-import { isFeatureNameDisabled } from '../../../../common/voidSettingsTypes.js';
+import { isFeatureNameDisabled } from '../../../../../../../workbench/contrib/void/common/voidSettingsTypes.js';
 
 
 
@@ -57,7 +57,7 @@ export const QuickEditChat = ({
 	}, [diffareaid, setIsStreamingRef]))
 
 	const loadingIcon = <div
-		className="@@codicon @@codicon-loading @@codicon-modifier-spin @@codicon-no-default-spin text-cymulateCodeEditor-fg-3"
+		className="@@codicon @@codicon-loading @@codicon-modifier-spin @@codicon-no-default-spin text-void-fg-3"
 	/>
 
 	const onSubmit = useCallback(async () => {
@@ -95,7 +95,7 @@ export const QuickEditChat = ({
 
 	const chatAreaRef = useRef<HTMLDivElement | null>(null)
 	return <div ref={sizerRef} style={{ maxWidth: 450 }} className={`py-2 w-full`}>
-		<CymulateCodeEditorChatArea
+		<VoidChatArea
 			featureName='Ctrl+K'
 			divRef={chatAreaRef}
 			onSubmit={onSubmit}
@@ -106,7 +106,7 @@ export const QuickEditChat = ({
 			isDisabled={isDisabled}
 			onClickAnywhere={() => { textAreaRef.current?.focus() }}
 		>
-			<CymulateCodeEditorInputBox2
+			<VoidInputBox2
 				className='px-1'
 				initValue={initText}
 				ref={useCallback((r: HTMLTextAreaElement | null) => {
@@ -131,7 +131,7 @@ export const QuickEditChat = ({
 				}}
 				multiline={true}
 			/>
-		</CymulateCodeEditorChatArea>
+		</VoidChatArea>
 	</div>
 
 

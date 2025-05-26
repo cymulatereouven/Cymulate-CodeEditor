@@ -3,7 +3,7 @@
  *  Licensed under the Apache License, Version 2.0. See LICENSE.txt for more information.
  *--------------------------------------------------------------------------------------*/
 
-import { ICymulateCodeEditorSettingsService } from './voidSettingsService.js';
+import { IVoidSettingsService } from './voidSettingsService.js';
 import { ILLMMessageService } from './sendLLMMessageService.js';
 import { Emitter, Event } from '../../../../base/common/event.js';
 import { Disposable, IDisposable } from '../../../../base/common/lifecycle.js';
@@ -80,7 +80,7 @@ export class RefreshModelService extends Disposable implements IRefreshModelServ
 
 
 	constructor(
-		@ICymulateCodeEditorSettingsService private readonly voidSettingsService: ICymulateCodeEditorSettingsService,
+		@IVoidSettingsService private readonly voidSettingsService: IVoidSettingsService,
 		@ILLMMessageService private readonly llmMessageService: ILLMMessageService,
 	) {
 		super()

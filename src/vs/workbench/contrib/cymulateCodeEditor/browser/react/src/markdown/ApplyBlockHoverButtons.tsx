@@ -33,12 +33,12 @@ export const IconShell1 = ({ onClick, Icon, disabled, className, ...props }: Ico
 			e.stopPropagation();
 			onClick?.(e);
 		}}
-		// border border-cymulateCodeEditor-border-1 rounded
+		// border border-void-border-1 rounded
 		className={`
 		size-[18px]
 		p-[2px]
 		flex items-center justify-center
-		text-sm text-cymulateCodeEditor-fg-3
+		text-sm text-void-fg-3
 		hover:brightness-110
 		disabled:opacity-50 disabled:cursor-not-allowed
 		${className}
@@ -141,7 +141,7 @@ const getUriBeingApplied = (applyBoxId: string) => {
 
 export const useApplyStreamState = ({ applyBoxId }: { applyBoxId: string }) => {
 	const accessor = useAccessor()
-	const voidCommandBarService = accessor.get('ICymulateCodeEditorCommandBarService')
+	const voidCommandBarService = accessor.get('IVoidCommandBarService')
 
 	const getStreamState = useCallback(() => {
 		const uri = getUriBeingApplied(applyBoxId)
@@ -173,15 +173,15 @@ export const useApplyStreamState = ({ applyBoxId }: { applyBoxId: string }) => {
 type IndicatorColor = 'green' | 'orange' | 'dark' | 'yellow' | null
 export const StatusIndicator = ({ indicatorColor, title, className, ...props }: { indicatorColor: IndicatorColor, title?: React.ReactNode, className?: string } & React.HTMLAttributes<HTMLDivElement>) => {
 	return (
-		<div className={`flex flex-row text-cymulateCodeEditor-fg-3 text-xs items-center gap-1.5 ${className}`} {...props}>
+		<div className={`flex flex-row text-void-fg-3 text-xs items-center gap-1.5 ${className}`} {...props}>
 			{title && <span className='opacity-80'>{title}</span>}
 			<div
 				className={` size-1.5 rounded-full border
-					${indicatorColor === 'dark' ? 'bg-[rgba(0,0,0,0)] border-cymulateCodeEditor-border-1' :
+					${indicatorColor === 'dark' ? 'bg-[rgba(0,0,0,0)] border-void-border-1' :
 						indicatorColor === 'orange' ? 'bg-orange-500 border-orange-500 shadow-[0_0_4px_0px_rgba(234,88,12,0.6)]' :
 							indicatorColor === 'green' ? 'bg-green-500 border-green-500 shadow-[0_0_4px_0px_rgba(22,163,74,0.6)]' :
 								indicatorColor === 'yellow' ? 'bg-yellow-500 border-yellow-500 shadow-[0_0_4px_0px_rgba(22,163,74,0.6)]' :
-									'bg-cymulateCodeEditor-border-1 border-cymulateCodeEditor-border-1'
+									'bg-void-border-1 border-void-border-1'
 					}
 				`}
 			/>
@@ -190,7 +190,7 @@ export const StatusIndicator = ({ indicatorColor, title, className, ...props }: 
 };
 
 const tooltipPropsForApplyBlock = ({ tooltipName, color = undefined, position = 'top', offset = undefined }: { tooltipName: string, color?: IndicatorColor, position?: PlacesType, offset?: number }) => ({
-	'data-tooltip-id': color === 'orange' ? `cymulateCodeEditor-tooltip-orange` : color === 'green' ? 'cymulateCodeEditor-tooltip-green' : 'cymulateCodeEditor-tooltip',
+	'data-tooltip-id': color === 'orange' ? `void-tooltip-orange` : color === 'green' ? 'void-tooltip-green' : 'void-tooltip',
 	'data-tooltip-place': position as PlacesType,
 	'data-tooltip-content': `${tooltipName}`,
 	'data-tooltip-offset': offset,
@@ -198,7 +198,7 @@ const tooltipPropsForApplyBlock = ({ tooltipName, color = undefined, position = 
 
 export const useEditToolStreamState = ({ applyBoxId, uri }: { applyBoxId: string, uri: URI }) => {
 	const accessor = useAccessor()
-	const voidCommandBarService = accessor.get('ICymulateCodeEditorCommandBarService')
+	const voidCommandBarService = accessor.get('IVoidCommandBarService')
 	const [streamState, setStreamState] = useState(voidCommandBarService.getStreamState(uri))
 	// listen for stream updates on this box
 	useCommandBarURIListener(useCallback((uri_) => {
@@ -351,14 +351,14 @@ const ApplyButtonsForEdit = ({
 		setApplying(newApplyingUri)
 
 		if (!applyDonePromise) {
-			notificationService.info(`CymulateCodeEditor Error: We couldn't run Apply here. ${uri === 'current' ? 'This Apply block wants to run on the current file, but you might not have a file open.' : `This Apply block wants to run on ${uri.fsPath}, but it might not exist.`}`)
+			notificationService.info(`Void Error: We couldn't run Apply here. ${uri === 'current' ? 'This Apply block wants to run on the current file, but you might not have a file open.' : `This Apply block wants to run on ${uri.fsPath}, but it might not exist.`}`)
 		}
 
 		// catch any errors by interrupting the stream
 		applyDonePromise?.catch(e => {
 			const uri = getUriBeingApplied(applyBoxId)
 			if (uri) editCodeService.interruptURIStreaming({ uri: uri })
-			notificationService.info(`CymulateCodeEditor Error: There was a problem running Apply: ${e}.`)
+			notificationService.info(`Void Error: There was a problem running Apply: ${e}.`)
 
 		})
 		metricsService.capture('Apply Code', { length: codeStr.length }) // capture the length only
@@ -535,12 +535,12 @@ export const BlockCodeApplyWrapper = ({
 		: <span>{language}</span>
 
 
-	return <div className='border border-cymulateCodeEditor-border-3 rounded overflow-hidden bg-cymulateCodeEditor-bg-3 my-1'>
+	return <div className='border border-void-border-3 rounded overflow-hidden bg-void-bg-3 my-1'>
 		{/* header */}
-		<div className=" select-none flex justify-between items-center py-1 px-2 border-b border-cymulateCodeEditor-border-3 cursor-default">
+		<div className=" select-none flex justify-between items-center py-1 px-2 border-b border-void-border-3 cursor-default">
 			<div className="flex items-center">
 				<StatusIndicatorForApplyButton uri={uri} applyBoxId={applyBoxId} />
-				<span className="text-[13px] font-light text-cymulateCodeEditor-fg-3">
+				<span className="text-[13px] font-light text-void-fg-3">
 					{name}
 				</span>
 			</div>

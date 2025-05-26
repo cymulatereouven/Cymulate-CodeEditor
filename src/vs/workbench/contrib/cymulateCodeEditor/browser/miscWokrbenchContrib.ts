@@ -26,7 +26,7 @@ export class MiscWorkbenchContribs extends Disposable implements IWorkbenchContr
 	private initialize(): void {
 
 		// delete blacklisted extensions once (this is for people who already installed them)
-		const deleteExtensionsStorageId = 'cymulateCodeEditor-deleted-blacklist-2'
+		const deleteExtensionsStorageId = 'void-deleted-blacklist-2'
 		const alreadyDeleted = this.storageService.get(deleteExtensionsStorageId, StorageScope.APPLICATION)
 		if (!alreadyDeleted) {
 			this.storageService.store(deleteExtensionsStorageId, 'true', StorageScope.APPLICATION, StorageTarget.MACHINE)

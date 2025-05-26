@@ -125,11 +125,11 @@ import ErrorTelemetry from '../../platform/telemetry/electron-main/errorTelemetr
 
 // in theory this is not allowed
 // ignore the eslint errors below
-import { IMetricsService } from '../../workbench/contrib/cymulateCodeEditor/common/metricsService.js';
-import { ICymulateCodeEditorUpdateService } from '../../workbench/contrib/cymulateCodeEditor/common/voidUpdateService.js';
-import { MetricsMainService } from '../../workbench/contrib/cymulateCodeEditor/electron-main/metricsMainService.js';
-import { CymulateCodeEditorMainUpdateService } from '../../workbench/contrib/cymulateCodeEditor/electron-main/voidUpdateMainService.js';
-import { LLMMessageChannel } from '../../workbench/contrib/cymulateCodeEditor/electron-main/sendLLMMessageChannel.js';
+import { IMetricsService } from '../../workbench/contrib/void/common/metricsService.js';
+import { IVoidUpdateService } from '../../workbench/contrib/void/common/voidUpdateService.js';
+import { MetricsMainService } from '../../workbench/contrib/void/electron-main/metricsMainService.js';
+import { VoidMainUpdateService } from '../../workbench/contrib/void/electron-main/voidUpdateMainService.js';
+import { LLMMessageChannel } from '../../workbench/contrib/void/electron-main/sendLLMMessageChannel.js';
 
 /**
  * The main VS Code application. There will only ever be one instance,
@@ -1099,9 +1099,9 @@ export class CodeApplication extends Disposable {
 			services.set(ITelemetryService, NullTelemetryService);
 		}
 
-		// CymulateCodeEditor main process services (required for services with a channel for comm between browser and electron-main (node))
+		// Void main process services (required for services with a channel for comm between browser and electron-main (node))
 		services.set(IMetricsService, new SyncDescriptor(MetricsMainService, undefined, false));
-		services.set(ICymulateCodeEditorUpdateService, new SyncDescriptor(CymulateCodeEditorMainUpdateService, undefined, false));
+		services.set(IVoidUpdateService, new SyncDescriptor(VoidMainUpdateService, undefined, false));
 
 		// Default Extensions Profile Init
 		services.set(IExtensionsProfileScannerService, new SyncDescriptor(ExtensionsProfileScannerService, undefined, true));
@@ -1233,15 +1233,15 @@ export class CodeApplication extends Disposable {
 		mainProcessElectronServer.registerChannel('logger', loggerChannel);
 		sharedProcessClient.then(client => client.registerChannel('logger', loggerChannel));
 
-		// CymulateCodeEditor - use loggerChannel as reference
+		// Void - use loggerChannel as reference
 		const metricsChannel = ProxyChannel.fromService(accessor.get(IMetricsService), disposables);
-		mainProcessElectronServer.registerChannel('cymulateCodeEditor-channel-metrics', metricsChannel);
+		mainProcessElectronServer.registerChannel('void-channel-metrics', metricsChannel);
 
-		const voidUpdatesChannel = ProxyChannel.fromService(accessor.get(ICymulateCodeEditorUpdateService), disposables);
-		mainProcessElectronServer.registerChannel('cymulateCodeEditor-channel-update', voidUpdatesChannel);
+		const voidUpdatesChannel = ProxyChannel.fromService(accessor.get(IVoidUpdateService), disposables);
+		mainProcessElectronServer.registerChannel('void-channel-update', voidUpdatesChannel);
 
 		const sendLLMMessageChannel = new LLMMessageChannel(accessor.get(IMetricsService));
-		mainProcessElectronServer.registerChannel('cymulateCodeEditor-channel-llmMessage', sendLLMMessageChannel);
+		mainProcessElectronServer.registerChannel('void-channel-llmMessage', sendLLMMessageChannel);
 
 		// Extension Host Debug Broadcasting
 		const electronExtensionHostDebugBroadcastChannel = new ElectronExtensionHostDebugBroadcastChannel(accessor.get(IWindowsMainService));
